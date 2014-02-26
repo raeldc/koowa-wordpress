@@ -1,0 +1,78 @@
+<?php
+/**
+ * @package Koowa
+ * @version .01
+ */
+/*
+Plugin Name: Koowa for Wordpress
+Plugin URI: http://github.com/raeldc/koowa-wordpress
+Description: Use Koowa Framework to develop Plugins in Wordpress
+Author: Israel D. Canasa
+Version: 0.1
+Author URI: http://israelcanasa.com/
+*/
+
+/**
+ * Initialize
+ */
+add_action('init', 'koowa_bootstrap');
+
+function koowa_bootstrap()
+{
+	$path = WP_PLUGIN_DIR.'/koowa/library/koowa.php';
+
+	if (!file_exists($path))
+		return false;
+
+	require_once $path;
+
+	$application = 'site';
+
+	Koowa::getInstance(array(
+		'cache-namespace' => 'koowa-'.$application.'-'.md5(AUTH_KEY),
+		'cache-enabled' => false
+	));
+
+	$manager = KObjectManager::getInstance();
+	$loader = $manager->getClassLoader();
+
+	//Application Basepaths
+	$loader->registerBasepath('site', ABSPATH);
+
+	//Component Locator
+	require_once dirname(__FILE__).'/components/koowa/class/locator/component.php';
+
+	$loader->registerLocator(
+		new ComKoowaClassLocatorComponent(array(
+			'namespaces' => array(
+				'\\'	=> WP_PLUGIN_DIR,
+				'Koowa' => WP_PLUGIN_DIR.'/koowa/library'
+			)
+		))
+	);
+
+	$loader->getLocator('component')->registerNamespace('Koowa', WP_PLUGIN_DIR.'/koowa/components');
+
+	$manager->registerLocator('lib:object.locator.component', array(
+			'sequence' => array(
+				'Com<Package><Class>',
+                'Com<Package><Path><File>',
+                'ComKoowa<Path><File>',
+                'ComKoowa<Path>Default',
+                'K<Path><File>',
+                'K<Path>Default'
+			)
+		)
+	);
+
+	// Call the Bootstrapper
+	$manager->getObject('com:koowa.bootstrapper')->bootstrap($application);
+
+	//Setup the request
+	$manager->getObject('request')
+		->registerApplication($application, '')
+		->setApplication($application);
+
+	$manager->registerAlias('com:koowa.database.adapter.mysqli', 'lib:database.adapter.mysqli');
+}
+
