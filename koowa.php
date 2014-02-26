@@ -76,3 +76,16 @@ function koowa_bootstrap()
 	$manager->registerAlias('com:koowa.database.adapter.mysqli', 'lib:database.adapter.mysqli');
 }
 
+function koowa_dispatch()
+{
+	$manager = KObjectManager::getInstance();
+	$request = $manager->getObject('request')->getQuery();
+
+	$uri = $request->page;
+	list($component, $view) = explode('/', $uri);
+
+	// Set the view but don't override it if it's already there
+	$request->set('view', $view, false);
+
+	$manager->getObject('com:'.$component.'.dispatcher.http')->dispatch();
+}
