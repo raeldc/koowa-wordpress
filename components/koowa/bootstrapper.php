@@ -23,8 +23,9 @@ class ComKoowaBootstrapper extends KObjectBootstrapperComponent
         $config->append(array(
             'priority' => self::PRIORITY_LOW,
             'aliases'  => array(
-                'request' => 'lib:dispatcher.request',
-                'lib:database.adapter.mysqli' => 'com:koowa.database.adapter.mysqli'
+                'request'                        => 'lib:dispatcher.request',
+                'lib:database.adapter.mysqli'    => 'com:koowa.database.adapter.mysqli',
+                'lib:template.locator.component' => 'com:koowa.template.locator.component'
             ),
             'configs' => array(
                 'lib:database.adapter.mysqli' => array(
