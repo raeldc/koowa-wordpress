@@ -15,7 +15,7 @@ Author URI: http://israelcanasa.com/
 /**
  * Initialize
  */
-add_action('init', 'koowa_bootstrap');
+add_action('plugins_loaded', 'koowa_bootstrap');
 
 function koowa_bootstrap()
 {
@@ -52,6 +52,7 @@ function koowa_bootstrap()
 	);
 
 	$loader->getLocator('component')->registerNamespace('Koowa', WP_PLUGIN_DIR.'/koowa/components');
+	$loader->getLocator('component')->registerNamespace('Application', WP_PLUGIN_DIR.'/koowa/components');
 
 	$manager->registerLocator('lib:object.locator.component');
 
@@ -62,18 +63,6 @@ function koowa_bootstrap()
 	$manager->getObject('request')
 		->registerApplication($application, '')
 		->setApplication($application);
-}
 
-function koowa_dispatch()
-{
-	$manager = KObjectManager::getInstance();
-	$request = $manager->getObject('request')->getQuery();
-
-	$uri = $request->page;
-	list($component, $view) = explode('/', $uri);
-
-	// Set the view but don't override it if it's already there
-	$request->set('view', $view, false);
-
-	$manager->getObject('com:'.$component.'.dispatcher.http')->dispatch();
+	add_action('init', array(KObjectManager::getInstance()->getObject('application'), 'run'));
 }

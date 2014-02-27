@@ -1,20 +1,19 @@
 <?php
 /**
- * Koowa for Wordpress
+ * Koowa Framework - http://developer.joomlatools.com/koowa
  *
- * @copyright   Copyright (C) 2014 Israel Canasa and WIZMEDIA. (http://www.wizmediateam.com)
- * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link        http://github.com/raeldc/koowa-wordpress for the canonical source repository
+ * @copyright	Copyright (C) 2007 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/joomlatools/koowa for the canonical source repository
  */
 
 /**
  * Dispatcher
  *
- * @author  Israel Canasa <https://github.com/raeldc>
- * @package Koowa\Dispatcher\Http
+ * @author  Johan Janssens <https://github.com/johanjanssens>
+ * @package Koowa\Component\Koowa
  */
-
-class ComKoowaDispatcherHttp extends KDispatcherHttp implements KObjectInstantiable
+class ComApplicationDispatcherHttp extends KDispatcherHttp implements KObjectInstantiable
 {
     /**
      * Constructor.
@@ -35,7 +34,7 @@ class ComKoowaDispatcherHttp extends KDispatcherHttp implements KObjectInstantia
      * Force creation of a singleton
      *
      * @param  KObjectConfigInterface  $config  Configuration options
-     * @param  KObjectManagerInterface $manager	A KObjectManagerInterface object
+     * @param  KObjectManagerInterface $manager A KObjectManagerInterface object
      * @return KDispatcherDefault
      */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
@@ -47,11 +46,28 @@ class ComKoowaDispatcherHttp extends KDispatcherHttp implements KObjectInstantia
             $class    = $manager->getClass($config->object_identifier);
             $instance = new $class($config);
             $manager->setObject($config->object_identifier, $instance);
-
-            //Add the factory map to allow easy access to the singleton
-            $manager->registerAlias($config->object_identifier, 'dispatcher');
         }
 
         return $manager->getObject($config->object_identifier);
+    }
+
+    /**
+     * Run the application
+     *
+     * @param KDispatcherContextInterface $context   A dispatcher context object
+     */
+    protected function _actionRun(KDispatcherContextInterface $context)
+    {
+
+    }
+
+    /**
+     * Route the request
+     *
+     * @param KDispatcherContextInterface $context   A dispatcher context object
+     */
+    protected function _actionRoute(KDispatcherContextInterface $context)
+    {
+        
     }
 }
