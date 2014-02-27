@@ -53,17 +53,7 @@ function koowa_bootstrap()
 
 	$loader->getLocator('component')->registerNamespace('Koowa', WP_PLUGIN_DIR.'/koowa/components');
 
-	$manager->registerLocator('lib:object.locator.component', array(
-			'sequence' => array(
-				'Com<Package><Class>',
-                'Com<Package><Path><File>',
-                'ComKoowa<Path><File>',
-                'ComKoowa<Path>Default',
-                'K<Path><File>',
-                'K<Path>Default'
-			)
-		)
-	);
+	$manager->registerLocator('lib:object.locator.component');
 
 	// Call the Bootstrapper
 	$manager->getObject('com:koowa.bootstrapper')->bootstrap($application);
