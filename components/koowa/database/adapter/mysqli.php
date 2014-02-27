@@ -29,29 +29,4 @@ class ComKoowaDatabaseAdapterMysqli extends KDatabaseAdapterMysqli implements KO
 
         return $manager->getObject($config->object_identifier);
     }
-
-    /**
-     * Initializes the options for the object
-     *
-     * Called from {@link __construct()} as a first step of object instantiation.
-     *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
-     */
-    protected function _initialize(KObjectConfig $config)
-    {
-        global $wpdb;
-
-        $config->append(array(
-            'table_prefix' => $wpdb->prefix,
-            'options' => array(
-            	'host'		=> DB_HOST,
-    			'username'	=> DB_USER,
-    			'password'  => DB_PASSWORD,
-    			'database'	=> DB_NAME,
-            )
-        ));
-
-        parent::_initialize($config);
-    }
 }

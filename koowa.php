@@ -72,8 +72,6 @@ function koowa_bootstrap()
 	$manager->getObject('request')
 		->registerApplication($application, '')
 		->setApplication($application);
-
-	$manager->registerAlias('com:koowa.database.adapter.mysqli', 'lib:database.adapter.mysqli');
 }
 
 function koowa_dispatch()

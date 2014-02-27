@@ -18,11 +18,25 @@ class ComKoowaBootstrapper extends KObjectBootstrapperComponent
 {
     protected function _initialize(KObjectConfig $config)
     {
+        global $wpdb;
+
         $config->append(array(
             'priority' => self::PRIORITY_LOW,
             'aliases'  => array(
                 'request' => 'lib:dispatcher.request',
+                'lib:database.adapter.mysqli' => 'com:koowa.database.adapter.mysqli'
             ),
+            'configs' => array(
+                'lib:database.adapter.mysqli' => array(
+                    'table_prefix' => $wpdb->prefix,
+                    'options' => array(
+                        'host'      => DB_HOST,
+                        'username'  => DB_USER,
+                        'password'  => DB_PASSWORD,
+                        'database'  => DB_NAME,
+                    )
+                )
+            )
         ));
 
         parent::_initialize($config);
