@@ -13,7 +13,7 @@
  * @author  Johan Janssens <https://github.com/johanjanssens>
  * @package Koowa\Component\Koowa
  */
-class ComApplicationDispatcherHttp extends KDispatcherHttp implements KObjectInstantiable
+class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjectInstantiable, KObjectMultiton
 {
     /**
      * Constructor.
@@ -42,6 +42,12 @@ class ComApplicationDispatcherHttp extends KDispatcherHttp implements KObjectIns
         // Check if an instance with this identifier already exists or not
         if (!$manager->isRegistered($config->object_identifier))
         {
+            //Add the object alias to allow easy access to the singleton
+            $manager->registerAlias($config->object_identifier, 'application');
+
+            //Merge alias configuration into the identifier
+            $config->append($manager->getIdentifier('application')->getConfig());
+
             //Create the singleton
             $class    = $manager->getClass($config->object_identifier);
             $instance = new $class($config);
@@ -58,7 +64,7 @@ class ComApplicationDispatcherHttp extends KDispatcherHttp implements KObjectIns
      */
     protected function _actionRun(KDispatcherContextInterface $context)
     {
-
+        $this->route();
     }
 
     /**
@@ -68,6 +74,70 @@ class ComApplicationDispatcherHttp extends KDispatcherHttp implements KObjectIns
      */
     protected function _actionRoute(KDispatcherContextInterface $context)
     {
-        
+        $url = clone $context->request->getUrl();
+
+        //Parse the route
+        $this->getRouter()->parse($url);
+
+        //Set the request
+        $context->request->query->add($url->query);
+        if (is_admin() && $context->request->query->has('com')) {
+            //Forward the request
+            $this->forward($context->request->query->get('com', 'cmd'));
+        }
+
+        //Dispatch the request
+        $this->dispatch();
+    }
+
+    /**
+     * Get the application router.
+     *
+     * @param  array $options   An optional associative array of configuration options.
+     * @return  ComKoowaDispatcherRouter
+     */
+    public function getRouter(array $options = array())
+    {
+        $router = $this->getObject('com:application.router', $options);
+        return $router;
+    }
+
+    /**
+     * Forward the request
+     *
+     * Forward to another dispatcher internally. Method makes an internal sub-request, calling the specified
+     * dispatcher and passing along the context.
+     *
+     * @param KDispatcherContextInterface $context  A dispatcher context object
+     * @throws  UnexpectedValueException    If the dispatcher doesn't implement the KDispatcherInterface
+     */
+    protected function _actionForward(KDispatcherContextInterface $context)
+    {
+        //Get the dispatcher identifier
+        if(is_string($context->param) && strpos($context->param, '.') === false )
+        {
+            $identifier            = $this->getIdentifier()->toArray();
+            $identifier['package'] = $context->param;
+            $identifier            = $this->getIdentifier($identifier);
+        }
+        else $identifier = $this->getIdentifier($context->param);
+
+        //Create the dispatcher
+        $config = array(
+            'request'    => $context->request,
+            'response'   => $context->response,
+            'user'       => $context->user,
+        );
+
+        $dispatcher = $this->getObject($identifier, $config);
+
+        if(!$dispatcher instanceof KDispatcherInterface)
+        {
+            throw new UnexpectedValueException(
+                'Dispatcher: '.get_class($dispatcher).' does not implement KDispatcherInterface'
+            );
+        }
+
+        $dispatcher->dispatch($context);
     }
 }

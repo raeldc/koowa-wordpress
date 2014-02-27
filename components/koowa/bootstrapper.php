@@ -25,7 +25,11 @@ class ComKoowaBootstrapper extends KObjectBootstrapperComponent
                 'request'                        => 'lib:dispatcher.request',
                 'application'                    => 'com:application.dispatcher.http',
                 'lib:database.adapter.mysqli'    => 'com:koowa.database.adapter.mysqli',
-                'lib:template.locator.component' => 'com:koowa.template.locator.component'
+                'lib:template.locator.component' => 'com:koowa.template.locator.component',
+                'translator'                     => 'com:koowa.translator',
+                'exception.handler'              => 'com:koowa.exception.handler',
+                'date'                           => 'com:koowa.date',
+                'event.publisher'                => 'com:koowa.event.publisher',
             ),
             'configs' => array(
                 'lib:database.adapter.mysqli' => array(

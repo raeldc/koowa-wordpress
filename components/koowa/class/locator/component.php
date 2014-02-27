@@ -73,7 +73,7 @@ class ComKoowaClassLocatorComponent extends KClassLocatorAbstract
             else
             {
                 //Exception for framework components. Follow library structure. Don't load classes from root.
-                if(isset($this->_namespaces[$namespace]) && $file != 'bootstrapper') {
+                if(isset($this->_namespaces[$namespace]) && $file != 'bootstrapper' && $file != 'router') {
                     $path = $file.'/'.$file;
                 } else {
                     $path = $file;
