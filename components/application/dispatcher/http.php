@@ -81,13 +81,10 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
 
         //Set the request
         $context->request->query->add($url->query);
-        if (is_admin() && $context->request->query->has('com')) {
+        if ($context->request->query->has('com')) {
             //Forward the request
             $this->forward($context->request->query->get('com', 'cmd'));
         }
-
-        //Dispatch the request
-        $this->dispatch();
     }
 
     /**
