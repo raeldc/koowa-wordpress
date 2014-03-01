@@ -57,7 +57,7 @@ function koowa_bootstrap()
 	$manager->registerLocator('lib:object.locator.component');
 
 	// Call the Bootstrapper
-	$manager->getObject('com:koowa.bootstrapper')->bootstrap($application);
+	$manager->getObject('com:application.bootstrapper')->bootstrap($application);
 
 	//Setup the request
 	$manager->getObject('request')
