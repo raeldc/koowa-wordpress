@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Wordpress\Bootstrapper
  */
-class ComApplicationBootstrapper extends ComKoowaBootstrapper
+class ComApplicationBootstrapper extends KObjectBootstrapperComponent
 {
     protected function _initialize(KObjectConfig $config)
     {
@@ -56,12 +56,11 @@ class ComApplicationBootstrapper extends ComKoowaBootstrapper
         $directory = WP_PLUGIN_DIR;
         foreach ($this->getComponents($directory) as $component)
         {
-            $component_dir = 'koowa-'.$component;
-            if (!file_exists($directory.'/'.$component_dir.'/bootstrapper.php') || !in_array($component_dir.'/'.$component_dir.'.php', get_option('active_plugins'))) {
+            if (!in_array($component.'/'.$component.'.php', get_option('active_plugins'))) {
                 continue;
             }
 
-            if($bootstrapper = $this->getBootstrapper($component, false)) {
+            if (file_exists($directory.'/'.$component.'/bootstrapper.php') && ($bootstrapper = $this->getBootstrapper($component, false))) {
                 $chain->addBootstrapper($bootstrapper);
             }
         }
@@ -90,11 +89,11 @@ class ComApplicationBootstrapper extends ComKoowaBootstrapper
         foreach (new DirectoryIterator($directory) as $dir)
         {
             //Only get the component directory names
-            if ($dir->isDot() || !$dir->isDir() || !preg_match('/^koowa-[a-zA-Z]+/', $dir->getBasename())) {
+            if ($dir->isDot() || !$dir->isDir() || !preg_match('/^[a-zA-Z]+/', $dir->getBasename())) {
                 continue;
             }
 
-            $components[] = substr($dir, 6);
+            $components[] = (string)$dir;
         }
 
         return $components;
