@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Wordpress\Bootstrapper
  */
-class ComKoowaBootstrapper extends KObjectBootstrapperComponent
+abstract class ComKoowaBootstrapper extends KObjectBootstrapperComponent
 {
     protected function _initialize(KObjectConfig $config)
     {
@@ -22,11 +22,5 @@ class ComKoowaBootstrapper extends KObjectBootstrapperComponent
         ));
 
         parent::_initialize($config);
-    }
-
-    public function getHandle()
-    {
-        //Prevent recursive bootstrapping
-        return null;
     }
 }
