@@ -64,7 +64,7 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
      */
     protected function _actionRun(KDispatcherContextInterface $context)
     {
-        $this->route();
+
     }
 
     /**
