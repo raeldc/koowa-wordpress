@@ -77,8 +77,8 @@ abstract class ComKoowaTemplateFilterTag extends KTemplateFilterAbstract impleme
         {
             foreach(array_unique($matches[2]) as $key => $match)
             {
-                $attribs = array_merge(array('content' => $match), $this->parseAttributes($matches[1][$key]));
-                $this->_parsed_tags[] = new KObjectConfig($attribs);
+                $attribs = new KObjectConfig(array_merge(array('content' => $match), $this->parseAttributes($matches[1][$key])));
+                $this->_parsed_tags[] = $attribs;
             }
 
             $text = str_replace($matches[0], '', $text);

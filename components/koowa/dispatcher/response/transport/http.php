@@ -27,14 +27,10 @@ class ComKoowaDispatcherResponseTransportHttp extends KDispatcherResponseTranspo
     {
         $request = $response->getRequest();
 
-        if ($request->isGet() && $request->getFormat() == 'html')
+        if (!$request->isGet() && $request->getFormat() != 'html')
         {
-            //Content
-            add_filter('the_content', array($response, 'getContent'));
-
-            return true;
+            // WARNING: RESTful response coming up! This will stop Wordpress's Application flow.
+            return parent::send($response);
         }
-
-        return parent::send($response);
     }
 }

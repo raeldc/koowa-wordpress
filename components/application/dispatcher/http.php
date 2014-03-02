@@ -64,7 +64,7 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
      */
     protected function _actionRun(KDispatcherContextInterface $context)
     {
-
+        $this->route();
     }
 
     /**
@@ -81,9 +81,21 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
 
         //Set the request
         $context->request->query->add($url->query);
-        if ($context->request->query->has('com')) {
+        if ($context->request->query->has('page'))
+        {
+            // Get the component and the view
+            $page = $context->request->query->get('page', 'internalurl');
+
+            if (strpos($page, '/') !== false)
+            {
+                list($component, $view) = explode('/', $page, 2);
+                $context->request->query->set('view', $view);
+                $context->request->query->remove('page');
+            }
+            else $component = $page;
+
             //Forward the request
-            $this->forward($context->request->query->get('com', 'cmd'));
+            $this->forward($component);
         }
     }
 
@@ -136,5 +148,10 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         }
 
         $dispatcher->dispatch($context);
+    }
+
+    protected function _actionRender(KDispatcherContextInterface $context)
+    {
+        echo $context->response->getContent();
     }
 }
