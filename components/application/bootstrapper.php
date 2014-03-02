@@ -50,6 +50,8 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
 
     public function bootstrap()
     {
+        parent::bootstrap();
+
         $chain = $this->getObject('lib:object.bootstrapper.chain');
 
         //Application components
@@ -66,8 +68,6 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
         }
 
         $chain->bootstrap();
-
-        parent::bootstrap();
     }
 
     public function getBootstrapper($name, $fallback = true)

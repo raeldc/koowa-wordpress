@@ -35,21 +35,21 @@ class ComKoowaTemplateFilterSubmenu extends ComKoowaTemplateFilterTag
         foreach ($this->_parsed_tags as $tag)
         {
             $tag->append(array(
+                'view' => 'default'
+            ))->append(array(
                 'page_title' => $tag->content,
                 'capability' => 'manage_options',
-                'menu_slug'  => $this->getIdentifier()->package,
-                'icon_url' => '',
-                'position' => null
+                'parent_page'  => $this->getIdentifier()->package,
+                'page'  => $this->getIdentifier()->package.'/'.$tag->view
             ));
 
             add_submenu_page(
+                $tag->parent_page,
                 $tag->page_title,
-                $tag->content, 
+                $tag->content,
                 $tag->capability,
-                $tag->menu_slug,
-                array($this->getObject('application'), 'route'),
-                $tag->icon_url,
-                $tag->position
+                $tag->page,
+                array($this->getObject('application'), 'route')
             );
         }
     }

@@ -41,9 +41,14 @@ class ComKoowaTemplateLocatorComponent extends KTemplateLocatorComponent
         } else {
             $rootpath  = $this->getObject('manager')->getClassLoader()->getLocator('component')->getNamespace(ucfirst($identifier['package']));
         }
-        // TODO: Load namespaces from the activated plugins list of Wordpress. Then also look for template overrides from the current theme.
+        // TODO: Look for template overrides from the current theme.
         $basepath  = WP_PLUGIN_DIR.'/'.strtolower($identifier['package']);
-        $filepath  = 'views/'.implode('/', $parts).'/tmpl';
+
+        if ($parts[0] != 'view' && count($parts)) {
+            $filepath  = 'views/'.implode('/', $parts).'/tmpl';
+        }
+        else $filepath  = 'views/tmpl';
+
         $fullpath  = $basepath.'/'.$filepath.'/'.$template.'.'.$format.'.php';
 
         // Find the template

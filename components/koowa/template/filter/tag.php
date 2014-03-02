@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Wordpress\Template\Filter
  */
-abstract class ComKoowaTemplateFilterTag extends KTemplateFilterAbstract
+abstract class ComKoowaTemplateFilterTag extends KTemplateFilterAbstract implements KTemplateFilterRenderer
 {
     protected $_tag;
     protected $_parsed_tags = array();

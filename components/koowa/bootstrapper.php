@@ -15,12 +15,43 @@
  */
 abstract class ComKoowaBootstrapper extends KObjectBootstrapperComponent
 {
+    protected $_has_adminmenu;
+    /**
+     * Constructor.
+     *
+     * @param   KObjectConfig $config Configuration options
+     */
+    public function __construct(KObjectConfig $config)
+    {
+        parent::__construct($config);
+
+        $this->_has_adminmenu = $config->has_adminmenu;
+    }
+
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'admin_menu_view' => 'adminmenu',
+            'has_adminmenu' => true,
         ));
 
         parent::_initialize($config);
+    }
+
+    public function bootstrap()
+    {
+        parent::bootstrap();
+
+        if (is_admin() && $this->_has_adminmenu) {
+            add_filter('admin_menu', array($this->getAdminmenu(), 'render'));
+        }
+    }
+
+    public function getAdminmenu()
+    {
+        $identifier         = $this->getIdentifier()->toArray();
+        $identifier['path'] = array('view');
+        $identifier['name'] = 'adminmenu';
+
+        return $this->getObject($this->getIdentifier($identifier));
     }
 }

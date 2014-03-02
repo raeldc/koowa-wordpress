@@ -37,7 +37,7 @@ class ComKoowaTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
             $tag->append(array(
                 'page_title' => $tag->content,
                 'capability' => 'manage_options',
-                'menu_slug'  => $this->getIdentifier()->package,
+                'page'  => $this->getIdentifier()->package,
                 'icon_url' => '',
                 'position' => null
             ));
@@ -46,7 +46,7 @@ class ComKoowaTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
                 $tag->page_title,
                 $tag->content, 
                 $tag->capability,
-                $tag->menu_slug,
+                $tag->page,
                 array($this->getObject('application'), 'route'),
                 $tag->icon_url,
                 $tag->position
