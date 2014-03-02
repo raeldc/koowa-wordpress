@@ -16,14 +16,19 @@
 class ComKoowaViewHtml extends KViewHtml
 {
     /**
-     * Constructor
+     * Initializes the config for the object
+     *
+     * Called from {@link __construct()} as a first step of object instantiation.
      *
      * @param   KObjectConfig $config Configuration options
+     * @return  void
      */
-    public function __construct(KObjectConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
-        parent::__construct($config);
-        //Add alias filter for editor helper
-        //$this->getTemplate()->getFilter('function')->addFunction('@editor', '$this->renderHelper(\'editor.display\', ');
+        $config->append(array(
+            'template_filters' => array('help')
+        ));
+
+        parent::_initialize($config);
     }
 }
