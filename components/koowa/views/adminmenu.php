@@ -50,6 +50,7 @@ class ComKoowaViewAdminmenu extends KViewTemplate
         $this->_content = (string) $this->getTemplate()
             ->load((string) $layout.'.html')
             ->compile()
+            ->evaluate()
             ->render();
     }
 
