@@ -62,7 +62,9 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                 continue;
             }
 
-            if (file_exists($directory.'/'.$component.'/bootstrapper.php') && ($bootstrapper = $this->getBootstrapper($component, false))) {
+            if (file_exists($directory.'/'.$component.'/bootstrapper.php') && ($bootstrapper = $this->getBootstrapper($component, false)))
+            {
+                $this->getObject('application')->registerComponent($component);
                 $chain->addBootstrapper($bootstrapper);
             }
         }

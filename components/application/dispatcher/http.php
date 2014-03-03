@@ -16,6 +16,13 @@
 class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjectInstantiable, KObjectMultiton
 {
     /**
+     * List of Registered Components
+     *
+     * @var array
+     */
+    protected $_registered_components = array();
+
+    /**
      * Constructor.
      *
      * @param KObjectConfig $config	An optional KObjectConfig object with configuration options.
@@ -93,8 +100,10 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
             }
             else $component = $page;
 
-            //Forward the request
-            $this->forward($component);
+            //Forward the request only if the component is registered as a Koowa component
+            if ($this->hasComponent($component)) {
+                $this->forward($component);
+            }
         }
     }
 
@@ -152,5 +161,15 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
     protected function _actionRender(KDispatcherContextInterface $context)
     {
         echo $context->response->getContent();
+    }
+
+    public function registerComponent($component)
+    {
+        $this->_registered_components[$component] = true;
+    }
+
+    public function hasComponent($component)
+    {
+        return isset($this->_registered_components[$component]);
     }
 }
