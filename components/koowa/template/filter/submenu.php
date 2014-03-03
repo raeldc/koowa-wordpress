@@ -32,15 +32,20 @@ class ComKoowaTemplateFilterSubmenu extends ComKoowaTemplateFilterTag
     {
         parent::render($text);
 
+        $parent = '';
+        if(preg_match('#<parent>(.*)<\/parent>#siU', $text, $matches))
+        {
+            $parent = $matches[1];
+            $text = str_replace($matches[0], '', $text);
+        }
+
         foreach ($this->_parsed_tags as $tag)
         {
             $tag->append(array(
-                'view' => 'default'
-            ))->append(array(
                 'page_title' => $tag->content,
                 'capability' => 'manage_options',
-                'parent_page'  => $this->getIdentifier()->package,
-                'page'  => $this->getIdentifier()->package.'/'.$tag->view
+                'parent_page'  => $parent,
+                'page'  => empty($tag->view) ? $this->getIdentifier()->package : $this->getIdentifier()->package.'/'.$tag->view
             ));
 
             add_submenu_page(

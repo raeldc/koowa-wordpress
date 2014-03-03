@@ -37,7 +37,7 @@ class ComKoowaTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
             $tag->append(array(
                 'page_title' => $tag->content,
                 'capability' => 'manage_options',
-                'page'  => $this->getIdentifier()->package,
+                'page'  => empty($tag->view) ? $this->getIdentifier()->package : $this->getIdentifier()->package.'/'.$tag->view,
                 'icon_url' => '',
                 'position' => null
             ));
@@ -51,6 +51,12 @@ class ComKoowaTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
                 $tag->icon_url,
                 $tag->position
             );
+
+            // Put the page on the text so that the submenu will know that they are under this page
+            $text = '<parent>'.trim($tag->page).'</parent>'.$text;
+
+            // Make sure to recognize only the first one
+            continue;
         }
     }
 }
