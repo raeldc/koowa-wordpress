@@ -90,7 +90,6 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
             {
                 list($component, $view) = explode('/', $page, 2);
                 $context->request->query->set('view', $view);
-                $context->request->query->remove('page');
             }
             else $component = $page;
 
