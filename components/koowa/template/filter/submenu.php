@@ -45,17 +45,34 @@ class ComKoowaTemplateFilterSubmenu extends ComKoowaTemplateFilterTag
                 'page_title' => $tag->content,
                 'capability' => 'manage_options',
                 'parent_page'  => $parent,
-                'page'  => empty($tag->view) ? $this->getIdentifier()->package : $this->getIdentifier()->package.'/'.$tag->view
             ));
+
+            $page = $this->getIdentifier()->package;
+
+            if (!empty($tag->component)) {
+                $page = $tag->component;
+            }
+
+            if (!empty($tag->view)) {
+                $page = $page.'/'.$tag->view;
+            }
+
+            if (!empty($tag->layout)) {
+                $page = $page.'/'.$tag->layout;
+            }
+
 
             add_submenu_page(
                 $tag->parent_page,
                 $tag->page_title,
                 $tag->content,
                 $tag->capability,
-                $tag->page,
+                $page,
                 array($this->getObject('application'), 'render')
             );
+
+            // Register this page
+            $this->getTemplate()->getView()->registerSubmenu($page);
         }
     }
 }

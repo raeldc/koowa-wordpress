@@ -37,23 +37,39 @@ class ComKoowaTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
             $tag->append(array(
                 'page_title' => $tag->content,
                 'capability' => 'manage_options',
-                'page'  => empty($tag->view) ? $this->getIdentifier()->package : $this->getIdentifier()->package.'/'.$tag->view,
-                'icon_url' => '',
-                'position' => null
+                'icon_url'   => '',
+                'position'   => null
             ));
+
+            $page = $this->getIdentifier()->package;
+
+            if (!empty($tag->component)) {
+                $page = $tag->component;
+            }
+
+            if (!empty($tag->view)) {
+                $page = $page.'/'.$tag->view;
+            }
+
+            if (!empty($tag->layout)) {
+                $page = $page.'/'.$tag->layout;
+            }
 
             add_menu_page(
                 $tag->page_title,
                 $tag->content, 
                 $tag->capability,
-                $tag->page,
+                $page,
                 array($this->getObject('application'), 'render'),
                 $tag->icon_url,
                 $tag->position
             );
 
             // Put the page on the text so that the submenu will know that they are under this page
-            $text = '<parent>'.trim($tag->page).'</parent>'.$text;
+            $text = '<parent>'.trim($page).'</parent>'.$text;
+
+            // Register this page
+            $this->getTemplate()->getView()->registerAdminmenu($page);
 
             // Make sure to recognize only the first one
             continue;

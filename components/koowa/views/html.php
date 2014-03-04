@@ -94,9 +94,18 @@ class ComKoowaViewHtml extends KViewHtml
 
         // Push option and view to the beginning of the array for easy to read URLs
         $parts = array_merge(array(
-            'page' => null,
-            'view'   => null
+            'page'   => null,
+            'view'   => null,
+            'layout' => null
         ), $parts);
+
+        if ($page = $this->getPage($parts)) {
+            $parts['page'] = $page;
+            unset($parts['view']);
+            unset($parts['layout']);
+        }
+        else $parts['page'] = $this->getObject('request')->getQuery()->get('page', 'internalurl');
+
 
         $route = clone $this->getObject('request')->getUrl();
         $route->setQuery($parts);
@@ -107,5 +116,21 @@ class ComKoowaViewHtml extends KViewHtml
         }
 
         return urldecode($route->toString(KHttpUrl::FULL));
+    }
+
+    /**
+     * Checks the $menu and $submenu to return the page that is equivalent to the query. Returns false if none is found.
+     */
+    public function getPage($parts)
+    {
+        $menu = $this->getObject('com:'.$this->getIdentifier()->package.'.view.adminmenu');
+
+        $page = $parts['page'] . !empty($parts['view']) ? '/'.$parts['view'] : '' . !empty($parts['layout']) ? '/'.$parts['layout'] : '';
+
+        if($menu->hasMenu($page)) {
+            return $page;
+        }
+
+        return false;
     }
 }
