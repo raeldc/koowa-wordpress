@@ -97,8 +97,15 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
 
             if (strpos($page, '/') !== false)
             {
-                list($component, $view) = explode('/', $page, 2);
-                $context->request->query->set('view', $view);
+                list($component, $view, $layout) = explode('/', $page, 3);
+
+                if (!$context->request->query->has('view')) {
+                    $context->request->query->set('view', $view);
+                }
+
+                if (!$context->request->query->has('layout')) {
+                    $context->request->query->set('layout', $layout);
+                }
             }
             else $component = $page;
 
