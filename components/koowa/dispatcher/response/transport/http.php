@@ -27,10 +27,40 @@ class ComKoowaDispatcherResponseTransportHttp extends KDispatcherResponseTranspo
     {
         $request = $response->getRequest();
 
-        if (!$request->isGet() && $request->getFormat() != 'html')
+        if ($request->isGet() && $request->getFormat() == 'html')
         {
-            // WARNING: RESTful response coming up! This will stop Wordpress's Application flow.
-            return parent::send($response);
+            //Cookies
+            foreach ($response->headers->getCookies() as $cookie)
+            {
+                setcookie(
+                    $cookie->name,
+                    $cookie->value,
+                    $cookie->expire,
+                    $cookie->path,
+                    $cookie->domain,
+                    $cookie->isSecure(),
+                    $cookie->isHttpOnly()
+                );
+            }
+
+            /* TODO: Send Message to Wordpress
+            //Messages
+            $messages = $response->getMessages(false);
+            foreach($messages as $type => $group)
+            {
+                if ($type === 'success') {
+                    $type = 'message';
+                }
+
+                foreach($group as $message) {
+                    JFactory::getApplication()->enqueueMessage($message, $type);
+                }
+            }
+            */
+
+            return true;
         }
+
+        return parent::send($response);
     }
 }
