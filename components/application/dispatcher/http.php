@@ -13,7 +13,7 @@
  * @author  Johan Janssens <https://github.com/johanjanssens>
  * @package Koowa\Component\Koowa
  */
-class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjectInstantiable, KObjectMultiton
+class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjectInstantiable, KObjectSingleton
 {
     /**
      * List of Registered Components
