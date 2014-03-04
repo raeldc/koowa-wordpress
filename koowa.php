@@ -44,9 +44,9 @@ function koowa_bootstrap()
 
 	$loader->registerLocator(
 		new ComKoowaClassLocatorComponent(array(
-				'namespaces' => array(
-				'\\'         => WP_PLUGIN_DIR,
-				'Koowa'      => WP_PLUGIN_DIR.'/koowa/library'
+			'namespaces' => array(
+				'\\'     => WP_PLUGIN_DIR,
+				'Koowa'  => WP_PLUGIN_DIR.'/koowa/library'
 			)
 		))
 	);
