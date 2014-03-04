@@ -71,7 +71,9 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
      */
     protected function _actionRun(KDispatcherContextInterface $context)
     {
-        $this->route();
+        if (is_admin()) {
+            add_action('admin_init', array($this, 'route'));
+        }
     }
 
     /**
