@@ -28,7 +28,6 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                 'application'                            => 'com:application.dispatcher.http',
                 'event.publisher'                        => 'com:koowa.event.publisher',
                 'exception.handler'                      => 'com:koowa.exception.handler',
-                'lib:database.adapter.mysqli'            => 'com:koowa.database.adapter.mysqli',
                 'lib:template.locator.component'         => 'com:koowa.template.locator.component',
                 'lib:dispatcher.response.transport.http' => 'com:koowa.dispatcher.response.transport.http'
             ),
@@ -51,6 +50,8 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
     public function bootstrap()
     {
         parent::bootstrap();
+
+        $this->getObject('lib:database.adapter.mysqli')->connect();
 
         $chain = $this->getObject('lib:object.bootstrapper.chain');
 
