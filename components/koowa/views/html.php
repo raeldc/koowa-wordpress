@@ -104,8 +104,7 @@ class ComKoowaViewHtml extends KViewHtml
             'layout' => null
         ), $parts);
 
-        if ($page = $this->getPage($parts))
-        {
+        if ($page = $this->getPage($parts)) {
             $parts['page'] = $page;
         }
         else $parts['page'] = $this->getObject('request')->getQuery()->get('page', 'internalurl');
@@ -127,41 +126,33 @@ class ComKoowaViewHtml extends KViewHtml
      */
     public function getPage(&$parts)
     {
-        $menu            = $this->getObject('com:'.$this->getIdentifier()->package.'.view.adminmenu');
-        $page            = $parts['page'];
-        $page_registered = false;
+        $menu      = $this->getObject('com:'.$this->getIdentifier()->package.'.view.adminmenu');
+        $component = $this->getIdentifier()->package;
 
-        if($page_registered = $menu->hasMenu($parts['page'])) {
-            $page = $parts['page'];
-        }else
-        {
-            if (!empty($parts['view'])) {
-                $page .= '/'.$parts['view'];
-            }
+        // First check if the combined component/view/layout exists
+        if (!$menu->hasMenu($page = $component.'/'.$parts['view'].'/'.$parts['layout']))
+            // Next check if the combined component/view exists
+            if (!$menu->hasMenu($page = $component.'/'.$parts['view']))
+                // Next check if the component exists
+                if (!$menu->hasMenu($page = $component))
+                    // Next check if the page=whatever exists
+                    if(!$menu->hasMenu($page = $parts['page']))
+                        // If it doesn't exist, return false
+                        return false;        
+        // end if
 
-            if (!empty($parts['layout'])) {
-                $page .= '/'.$parts['layout'];
-            }
+        $count = substr_count($page, '/');
 
-            $page_registered = $menu->hasPage($page);
+        if ($count == 1) {
+            unset($parts['view']);
         }
 
-        if($page_registered)
+        if ($count == 2)
         {
-            $count = substr_count($page, '/');
-
-            if ($count == 1) {
-                unset($parts['view']);
-            }
-
-            if ($count == 2) {
-                unset($parts['view']);
-                unset($parts['layout']);
-            }
-
-            return $page;
+            unset($parts['view']);
+            unset($parts['layout']);
         }
 
-        return false;
+        return $page;
     }
 }
