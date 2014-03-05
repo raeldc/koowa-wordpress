@@ -62,7 +62,6 @@ class ComKoowaTemplateFilterScript extends KTemplateFilterScript
 
             if ($location == 'header')
             {
-                dbug($html);
                 if (empty($this->_header_scripts)) {
                     add_action(is_admin() ? 'admin_head' : 'wp_head', array($this, 'renderHeaderScripts'));
                 }
