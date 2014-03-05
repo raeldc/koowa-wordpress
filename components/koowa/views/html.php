@@ -69,6 +69,11 @@ class ComKoowaViewHtml extends KViewHtml
             $parts['view'] = $this->getName();
         }
 
+        //Add the layout information to the route
+        if (!isset($parts['layout'])) {
+            $parts['layout'] = $this->getLayout();
+        }
+
         //Add the format information to the route only if it's not 'html'
         if (!isset($parts['format']) && $this->getIdentifier()->name !== 'html') {
             $parts['format'] = $this->getIdentifier()->name;
@@ -99,10 +104,9 @@ class ComKoowaViewHtml extends KViewHtml
             'layout' => null
         ), $parts);
 
-        if ($page = $this->getPage($parts)) {
+        if ($page = $this->getPage($parts))
+        {
             $parts['page'] = $page;
-            unset($parts['view']);
-            unset($parts['layout']);
         }
         else $parts['page'] = $this->getObject('request')->getQuery()->get('page', 'internalurl');
 
@@ -121,13 +125,40 @@ class ComKoowaViewHtml extends KViewHtml
     /**
      * Checks the $menu and $submenu to return the page that is equivalent to the query. Returns false if none is found.
      */
-    public function getPage($parts)
+    public function getPage(&$parts)
     {
-        $menu = $this->getObject('com:'.$this->getIdentifier()->package.'.view.adminmenu');
+        $menu            = $this->getObject('com:'.$this->getIdentifier()->package.'.view.adminmenu');
+        $page            = $parts['page'];
+        $page_registered = false;
 
-        $page = $parts['page'] . !empty($parts['view']) ? '/'.$parts['view'] : '' . !empty($parts['layout']) ? '/'.$parts['layout'] : '';
+        if($page_registered = $menu->hasMenu($parts['page'])) {
+            $page = $parts['page'];
+        }else
+        {
+            if (!empty($parts['view'])) {
+                $page .= '/'.$parts['view'];
+            }
 
-        if($menu->hasMenu($page)) {
+            if (!empty($parts['layout'])) {
+                $page .= '/'.$parts['layout'];
+            }
+
+            $page_registered = $menu->hasPage($page);
+        }
+
+        if($page_registered)
+        {
+            $count = substr_count($page, '/');
+
+            if ($count == 1) {
+                unset($parts['view']);
+            }
+
+            if ($count == 2) {
+                unset($parts['view']);
+                unset($parts['layout']);
+            }
+
             return $page;
         }
 
