@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Wordpress\View\Adminmenu
  */
-class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable, KObjectSingleton
+class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable, KObjectMultiton
 {
     protected $_registered_adminmenu = array();
     protected $_registered_submenu = array();
