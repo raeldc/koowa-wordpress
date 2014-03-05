@@ -79,19 +79,30 @@ class ComKoowaTemplateFilterScript extends KTemplateFilterScript
         }
         else
         {
-            /*
             unset($attribs['src']);
             unset($attribs['condition']);
-            $attribs = $this->buildAttributes($attribs);
 
-            if($condition)
+            // Get dependencies
+            if (isset($attribs['dependencies']))
             {
-                $html  = '<!--['.$condition.']>';
-                $html .= '<script src="'.$link.'" '.$attribs.' /></script>'."\n";
-                $html .= '<![endif]-->';
+                $dependencies = explode(',', $attribs['dependencies']);
+                array_walk($dependencies, 'trim');
             }
-            else $html  = '<script src="'.$link.'" '.$attribs.' /></script>'."\n";
-            */
+
+            $name = (isset($attribs['name'])) ? $attribs['name'] : str_replace('.js', '', end(explode('/', $link)));
+            unset($attribs['name']);
+
+            $version = isset($attribs['version']) ? $attribs['version']: false;
+            unset($attribs['version']);
+
+            $footer = isset($attribs['location']) && $attribs['location'] == 'footer' ? true: false;
+            unset($attribs['location']);
+
+            $attributes = $this->buildAttributes($attribs);
+
+            wp_register_script($name, $link, $dependencies, $version, $footer);
+
+            wp_enqueue_script($name);
         }
     }
 
