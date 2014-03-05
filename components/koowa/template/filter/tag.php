@@ -43,7 +43,7 @@ abstract class ComKoowaTemplateFilterTag extends KTemplateFilterAbstract impleme
     {
         $config->append(array(
             'priority' => self::PRIORITY_LOW,
-            'tag' => ''
+            'tag'      => $this->getIdentifier()->name
         ));
 
         parent::_initialize($config);

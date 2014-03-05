@@ -15,12 +15,6 @@
  */
 class ComKoowaTemplateFilterSubmenu extends ComKoowaTemplateFilterTag
 {
-    protected function _initialize(KObjectConfig $config)
-    {
-        $config->append(array(
-            'tag' => 'submenu'
-        ));
-    }
     /**
      * Render the tag
      *

@@ -15,12 +15,6 @@
  */
 class ComKoowaTemplateFilterHelp extends ComKoowaTemplateFilterTag
 {
-    protected function _initialize(KObjectConfig $config)
-    {
-        $config->append(array(
-            'tag' => 'help'
-        ));
-    }
     /**
      * Render the tag
      *

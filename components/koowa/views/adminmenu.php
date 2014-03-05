@@ -64,7 +64,7 @@ class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable
     protected function _actionRender(KViewContext $context)
     {
         //Handle partial layout paths
-        $identifier = $this->getIdentifier()->toArray();
+        $identifier         = $this->getIdentifier()->toArray();
         $identifier['path'] = array('view');
         $identifier['name'] = 'adminmenu';
 
