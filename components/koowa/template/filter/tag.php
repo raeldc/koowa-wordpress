@@ -11,7 +11,7 @@
  * Tag Template Filter
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Template\Filter
+ * @package Koowa\Wordpress\Template\Filter
  */
 abstract class ComKoowaTemplateFilterTag extends KTemplateFilterAbstract implements KTemplateFilterRenderer
 {

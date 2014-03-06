@@ -13,7 +13,7 @@
  * Provides route building and parsing functionality
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Bootstrapper
+ * @package Koowa\Wordpress\Bootstrapper
  */
 final class ComKoowaDispatcherRouterDefault extends ComKoowaDispatcherRouterAbstract
 {

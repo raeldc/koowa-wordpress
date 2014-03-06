@@ -11,6 +11,6 @@
  * Default Controller Permission
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Koowa\Library\Controller
+ * @package Koowa\Wordpress\Library\Controller
  */
 final class ComKoowaControllerPermissionDefault extends ComKoowaControllerPermissionAbstract { }

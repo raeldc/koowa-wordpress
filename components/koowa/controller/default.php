@@ -11,7 +11,7 @@
  * Default Controller
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Controller
+ * @package Koowa\Wordpress\Controller
  */
 final class ComKoowaControllerDefault extends ComKoowaControllerModel
 {

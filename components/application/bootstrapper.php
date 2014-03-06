@@ -11,7 +11,7 @@
  * Application Bootstrapper
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Bootstrapper
+ * @package Koowa\Wordpress\Bootstrapper
  */
 class ComApplicationBootstrapper extends KObjectBootstrapperComponent
 {

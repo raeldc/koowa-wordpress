@@ -11,7 +11,7 @@
  * Controller Model
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Controller\Behavior
+ * @package Koowa\Wordpress\Controller\Behavior
  */
 abstract class ComKoowaControllerModel extends KControllerModel
 {

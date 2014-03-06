@@ -13,7 +13,7 @@
  * Provides route building and parsing functionality
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Koowa\Dispatcher\Router
+ * @package Koowa\Wordpress\Dispatcher\Router
  */
 abstract class ComKoowaDispatcherRouterAbstract extends KObject implements ComKoowaDispatcherRouterInterface, KObjectMultiton
 {

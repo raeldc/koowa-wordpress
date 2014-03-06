@@ -11,7 +11,7 @@
  * Object Bootstrapper Chain
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Object\Bootstrapper
+ * @package Koowa\Wordpress\Object\Bootstrapper
  */
 class ComKoowaObjectBootstrapperChain extends KObjectBootstrapperChain implements KObjectInstantiable, KObjectSingleton
 {

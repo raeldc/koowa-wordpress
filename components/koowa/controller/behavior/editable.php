@@ -11,7 +11,7 @@
  * Editable Controller Behavior
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Controller\Behavior
+ * @package Koowa\Wordpress\Controller\Behavior
  */
 class ComKoowaControllerBehaviorEditable extends KControllerBehaviorEditable
 {

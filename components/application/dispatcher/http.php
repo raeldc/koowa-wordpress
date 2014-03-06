@@ -11,7 +11,7 @@
  * Dispatcher
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Koowa\Component\Koowa
+ * @package Koowa\Wordpress\Component\Koowa
  */
 class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjectInstantiable, KObjectSingleton
 {

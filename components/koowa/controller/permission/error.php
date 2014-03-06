@@ -11,7 +11,7 @@
  * Error Controller Permission
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Koowa\Library\Controller
+ * @package Koowa\Wordpress\Library\Controller
  */
 class ComKoowaControllerPermissionError extends KControllerPermissionAbstract
 {

@@ -11,7 +11,7 @@
  * Abstract Template
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Koowa\Template
+ * @package Koowa\Wordpress\Template
  */
 abstract class ComKoowaTemplateAbstract extends KTemplateAbstract
 {

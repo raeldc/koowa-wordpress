@@ -11,7 +11,7 @@
  * Adminmenu View
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\View\Adminmenu
+ * @package Koowa\Wordpress\View\Adminmenu
  */
 class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable, KObjectMultiton
 {

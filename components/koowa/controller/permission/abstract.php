@@ -11,7 +11,7 @@
  * Abstract Controller Permission
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Koowa\Library\Controller
+ * @package Koowa\Wordpress\Library\Controller
  */
 abstract class ComKoowaControllerPermissionAbstract extends KControllerPermissionAbstract
 {

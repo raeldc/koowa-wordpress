@@ -11,7 +11,7 @@
  * JSON View
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\View
+ * @package Koowa\Wordpress\View
  */
 class ComKoowaViewJson extends ComKoowaViewAbstract
 {

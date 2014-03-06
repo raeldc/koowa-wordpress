@@ -11,7 +11,7 @@
  * View Abstract
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\View
+ * @package Koowa\Wordpress\View
  */
 abstract class ComKoowaViewAbstract extends KViewAbstract
 {

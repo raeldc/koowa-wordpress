@@ -11,7 +11,7 @@
  * Title Template Filter
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Wordpress\Template\Filter
+ * @package Koowa\Wordpress\Template\Filter
  */
 class ComKoowaTemplateFilterTitle extends KTemplateFilterTitle
 {

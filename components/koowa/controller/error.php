@@ -11,7 +11,7 @@
  * Exception Controller
  *
  * @author  Israel Canasa <http://github.com/raeldc>
- * @package Koowa\Component\Koowa
+ * @package Koowa\Wordpress\Component\Koowa
  */
 class ComKoowaControllerError extends KControllerView
 {
