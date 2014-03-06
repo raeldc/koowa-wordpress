@@ -32,8 +32,7 @@ class ComKoowaTemplateFilterScript extends KTemplateFilterScript
      */
     public function render(&$text)
     {
-        $scripts = $this->_parseTags($text);
-
+        $this->_parseTags($text);
     }
 
     /**
