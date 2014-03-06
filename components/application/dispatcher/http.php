@@ -1,16 +1,16 @@
 <?php
 /**
- * Koowa Framework - http://developer.joomlatools.com/koowa
+ * Koowa for Wordpress
  *
- * @copyright	Copyright (C) 2007 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @copyright	Copyright (C) 2014 Israel D. Canasa and WIZMEDIA (http://wizmediateam.com)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/joomlatools/koowa for the canonical source repository
+ * @link		https://github.com/raeldc/koowa-wordpress.git for the canonical source repository
  */
 
 /**
  * Dispatcher
  *
- * @author  Johan Janssens <https://github.com/johanjanssens>
+ * @author  Israel Canasa <http://github.com/raeldc>
  * @package Koowa\Component\Koowa
  */
 class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjectInstantiable, KObjectSingleton
