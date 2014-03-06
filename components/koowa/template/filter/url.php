@@ -31,9 +31,7 @@ class ComKoowaTemplateFilterUrl extends KTemplateFilterUrl
 
         $config->append(array(
             'aliases' => array(
-                'script://' => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$dir.'/media/js/'),
-                'css://'    => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$dir.'/media/css/'),
-                'img://'    => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$dir.'/media/images/'),
+                'media://' => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$dir.'/media/'),
             ),
         ));
 
