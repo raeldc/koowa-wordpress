@@ -8,30 +8,13 @@
  */
 
 /**
- * View
+ * View Abstract
  *
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Wordpress\View
  */
-class ComKoowaViewHtml extends KViewHtml
+abstract class ComKoowaViewAbstract extends KViewAbstract
 {
-    /**
-     * Initializes the config for the object
-     *
-     * Called from {@link __construct()} as a first step of object instantiation.
-     *
-     * @param   KObjectConfig $config Configuration options
-     * @return  void
-     */
-    protected function _initialize(KObjectConfig $config)
-    {
-        $config->append(array(
-            'template_filters' => array('help', 'script')
-        ));
-
-        parent::_initialize($config);
-    }
-
     /**
      * Get a route based on a full or partial query string
      *
