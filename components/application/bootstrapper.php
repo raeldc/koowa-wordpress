@@ -28,6 +28,7 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                 'application'                            => 'com:application.dispatcher.http',
                 'event.publisher'                        => 'com:koowa.event.publisher',
                 'exception.handler'                      => 'com:koowa.exception.handler',
+                'lib:object.bootstrapper.chain'          => 'com:koowa.object.bootstrapper.chain',
                 'lib:template.locator.component'         => 'com:koowa.template.locator.component',
                 'lib:dispatcher.response.transport.http' => 'com:koowa.dispatcher.response.transport.http'
             ),
@@ -53,53 +54,9 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
 
         $this->getObject('lib:database.adapter.mysqli')->connect();
 
-        $chain = $this->getObject('lib:object.bootstrapper.chain');
-
-        //Application components
-        $directory = WP_PLUGIN_DIR;
-        foreach ($this->getComponents($directory) as $component)
-        {
-            if (!in_array($component.'/'.$component.'.php', get_option('active_plugins'))) {
-                continue;
-            }
-
-            if (file_exists($directory.'/'.$component.'/bootstrapper.php') && ($bootstrapper = $this->getBootstrapper($component, false)))
-            {
-                $this->getObject('application')->registerComponent($component);
-                $chain->addBootstrapper($bootstrapper);
-            }
-        }
-
-        $chain->bootstrap();
-    }
-
-    public function getBootstrapper($name, $fallback = true)
-    {
-        $bootstrapper = null;
-
-        //Register the bootstrapper
-        $identifier = 'com:'.$name.'.bootstrapper';
-        if($this->getObjectManager()->getClass($identifier, $fallback)) {
-            $bootstrapper = $this->getObject($identifier);
-        }
-
-        return $bootstrapper;
-    }
-
-    public function getComponents($directory)
-    {
-        $components = array();
-        foreach (new DirectoryIterator($directory) as $dir)
-        {
-            //Only get the component directory names
-            if ($dir->isDot() || !$dir->isDir() || !preg_match('/^[a-zA-Z]+/', $dir->getBasename())) {
-                continue;
-            }
-
-            $components[] = (string)$dir;
-        }
-
-        return $components;
+        // Boostrap other koowa extensions
+        do_action('koowa_bootstrap');
+        $this->getObject('lib:object.bootstrapper.chain')->bootstrap();
     }
 
     public function getHandle()

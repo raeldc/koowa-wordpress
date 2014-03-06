@@ -37,19 +37,17 @@ class ComKoowaTemplateLocatorComponent extends KTemplateLocatorComponent
         }
 
         if(!empty($identifier['domain'])) {
-            $rootpath = $this->getObject('manager')->getClassLoader()->getBasepath($identifier['domain']);
+            $rootpath = $this->getObject('manager')->getClassLoader()->getBasepath($identifier['domain']).'/'.$identifier['package'];
         } else {
-            $rootpath  = $this->getObject('manager')->getClassLoader()->getLocator('component')->getNamespace(ucfirst($identifier['package']));
+            $rootpath  = $this->getObject('manager')->getClassLoader()->getLocator('component')->getNamespace(ucfirst($identifier['package'])).'/'.$identifier['package'];
         }
-        // TODO: Look for template overrides from the current theme.
-        $basepath  = WP_PLUGIN_DIR.'/'.strtolower($identifier['package']);
 
         if ($parts[0] != 'view' && count($parts)) {
             $filepath  = 'views/'.implode('/', $parts).'/tmpl';
         }
         else $filepath  = 'views/tmpl';
 
-        $fullpath  = $basepath.'/'.$filepath.'/'.$template.'.'.$format.'.php';
+        $fullpath  = $rootpath.'/'.$filepath.'/'.$template.'.'.$format.'.php';
 
         // Find the template
         $result = $this->realPath($fullpath);
