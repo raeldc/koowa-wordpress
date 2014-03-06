@@ -27,11 +27,13 @@ class ComKoowaTemplateFilterUrl extends KTemplateFilterUrl
      */
     protected function _initialize(KObjectConfig $config)
     {
+        $dir = $this->getObject('application')->getComponentDir($this->getIdentifier()->package);
+
         $config->append(array(
             'aliases' => array(
-                'script://' => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$this->getIdentifier()->package.'/_media/js/'),
-                'css://'    => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$this->getIdentifier()->package.'/_media/css/'),
-                'img://'    => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$this->getIdentifier()->package.'/_media/images/'),
+                'script://' => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$dir.'/media/js/'),
+                'css://'    => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$dir.'/media/css/'),
+                'img://'    => str_replace('wp-admin/', '', $this->getObject('request')->getBaseUrl().'/wp-content/plugins/'.$dir.'/media/images/'),
             ),
         ));
 
