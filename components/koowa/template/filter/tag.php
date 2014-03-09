@@ -15,7 +15,16 @@
  */
 abstract class ComKoowaTemplateFilterTag extends KTemplateFilterAbstract implements KTemplateFilterRenderer
 {
+    /**
+     * Tag to detect
+     * @var string
+     */
     protected $_tag;
+
+    /**
+     * Contains all the content of the parsed tag
+     * @var array
+     */
     protected $_parsed_tags = array();
 
     /**

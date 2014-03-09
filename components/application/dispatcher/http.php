@@ -167,11 +167,22 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         $dispatcher->dispatch($context);
     }
 
+    /**
+     * Send the content of the response object to the browser.
+     * @param  KDispatcherContextInterface $context
+     * @return void
+     */
     protected function _actionRender(KDispatcherContextInterface $context)
     {
         echo $context->response->getContent();
     }
 
+    /**
+     * Register a component namespace
+     * @param  string $component
+     * @param  string $dir
+     * @return ComApplicationDispatcherHttp
+     */
     public function registerComponent($component, $dir)
     {
         $this->getObject('manager')->getClassLoader()->getLocator('component')->registerNamespace(ucfirst($component), $dir.'/components');
@@ -179,13 +190,25 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         $this->getObject('lib:object.bootstrapper.chain')->addBootstrapper($this->getObject('com:'.$component.'.bootstrapper'));
 
         $this->_registered_components[$component] = end(explode('/',$dir));
+
+        return $this;
     }
 
+    /**
+     * Check if the component has been registered
+     * @param  string  $component
+     * @return boolean
+     */
     public function hasComponent($component)
     {
         return isset($this->_registered_components[$component]);
     }
 
+    /**
+     * Returns the directory of the component
+     * @param  string $component
+     * @return string or boolean false
+     */
     public function getComponentDir($component)
     {
         return isset($this->_registered_components[$component]) ? $this->_registered_components[$component] : false;

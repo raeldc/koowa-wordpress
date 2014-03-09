@@ -15,7 +15,16 @@
  */
 class ComKoowaTemplateFilterTitle extends KTemplateFilterTitle
 {
+    /**
+     * Current Title
+     * @var string
+     */
     protected $_title = '';
+
+    /**
+     * Attributes of the title
+     * @var array
+     */
     protected $_attribs = array();
 
     /**

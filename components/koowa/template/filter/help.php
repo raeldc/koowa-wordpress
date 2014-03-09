@@ -29,6 +29,10 @@ class ComKoowaTemplateFilterHelp extends ComKoowaTemplateFilterTag
         add_action('current_screen', array($this, 'display'));
     }
 
+    /**
+     * This use the current screen object of Wordpress to display the contents of the help tag
+     * @return void
+     */
     public function display()
     {
         $screen = get_current_screen();

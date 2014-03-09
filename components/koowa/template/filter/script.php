@@ -15,7 +15,14 @@
  */
 class ComKoowaTemplateFilterScript extends KTemplateFilterScript
 {
+    /**
+     * @var string
+     */
     protected $_footer_scripts = '';
+
+    /**
+     * @var string
+     */
     protected $_header_scripts = '';
 
     /**
@@ -105,11 +112,19 @@ class ComKoowaTemplateFilterScript extends KTemplateFilterScript
         }
     }
 
+    /**
+     * Send the generated header scripts to the browser
+     * @return void
+     */
     public function renderHeaderScripts()
     {
         echo $this->_header_scripts;
     }
 
+    /**
+     * Send the generated footer scripts to the browser
+     * @return void
+     */
     public function renderFooterScripts()
     {
         echo $this->_footer_scripts;
