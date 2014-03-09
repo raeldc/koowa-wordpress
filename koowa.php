@@ -45,14 +45,12 @@ function koowa_bootstrap()
 	$loader->registerLocator(
 		new ComKoowaClassLocatorComponent(array(
 			'namespaces' => array(
-				'\\'     => WP_PLUGIN_DIR,
-				'Koowa'  => WP_PLUGIN_DIR.'/koowa/library'
+				'\\'          => WP_PLUGIN_DIR,
+				'Koowa'       => WP_PLUGIN_DIR.'/koowa/components',
+				'Application' => WP_PLUGIN_DIR.'/koowa/components',
 			)
 		))
 	);
-
-	$loader->getLocator('component')->registerNamespace('Koowa', WP_PLUGIN_DIR.'/koowa/components');
-	$loader->getLocator('component')->registerNamespace('Application', WP_PLUGIN_DIR.'/koowa/components');
 
 	$manager->registerLocator('lib:object.locator.component');
 
