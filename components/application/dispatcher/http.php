@@ -129,7 +129,11 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
 
             if (strpos($page, '/') !== false)
             {
-                list($context->component, $view, $layout) = explode('/', $page, 3);
+                list($component, $view, $layout) = explode('/', $page, 3);
+
+                if (!$this->hasComponent($component)) {
+                    return false;
+                }
 
                 if (!$context->request->query->has('view')) {
                     $context->request->query->set('view', $view);
@@ -138,12 +142,15 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
                 if (!$context->request->query->has('layout')) {
                     $context->request->query->set('layout', $layout);
                 }
-            }
-            else $context->component = $page;
 
-            if (!$this->hasComponent($context->component)) {
+                $context->component = $component;
+            } elseif ($this->hasComponent($page)) {
+                $context->component = $page;
+            } else {
                 return false;
             }
+        } else {
+            return false;
         }
     }
 
