@@ -183,6 +183,8 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
                 }
 
                 add_filter('the_content', array($context->response, 'getContent'));
+            } else {
+                return false;
             }
         }
         else
