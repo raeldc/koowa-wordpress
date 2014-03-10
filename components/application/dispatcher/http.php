@@ -156,7 +156,7 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
     {
         global $post;
 
-        if (!is_home() && $post)
+        if (is_page() && $post)
         {
             $page = $this->getObject('com:application.model.pages')->setState(array(
                 'id' => $post->ID
