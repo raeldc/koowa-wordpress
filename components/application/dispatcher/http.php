@@ -74,22 +74,23 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         if (is_admin()) {
             add_action('admin_init', array($this, 'route'));
         }
+        // If not in admin and the request method is not GET or format is not HTML - this will allow Koowa to hijack Wordpress's application flow.
+        elseif(
+            ( $context->request->getMethod() != 'GET' || $context->request->getFormat() != 'html') &&
+            $this->hasComponent($component = $context->request->query->get('com', 'cmd'))
+        ){
+            // No need to route
+            $this->forward($component);
+        }
     }
 
     /**
-     * Route the request
+     * Route the request for the admin section
      *
      * @param KDispatcherContextInterface $context   A dispatcher context object
      */
     protected function _actionRoute(KDispatcherContextInterface $context)
     {
-        $url = clone $context->request->getUrl();
-
-        //Parse the route
-        $this->getRouter()->parse($url);
-
-        //Set the request
-        $context->request->query->add($url->query);
         if ($context->request->query->has('page'))
         {
             // Get the component and the view
@@ -114,18 +115,6 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
                 $this->forward($component);
             }
         }
-    }
-
-    /**
-     * Get the application router.
-     *
-     * @param  array $options   An optional associative array of configuration options.
-     * @return  ComKoowaDispatcherRouter
-     */
-    public function getRouter(array $options = array())
-    {
-        $router = $this->getObject('com:application.router', $options);
-        return $router;
     }
 
     /**
