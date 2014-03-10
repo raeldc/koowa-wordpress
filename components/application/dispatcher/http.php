@@ -76,7 +76,7 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         }
         // If not in admin and the request method is not GET or format is not HTML - this will allow Koowa to hijack Wordpress's application flow.
         elseif(
-            ( $context->request->getMethod() != 'GET' || $context->request->getFormat() != 'html') &&
+            ( !$context->request->isGet() || $context->request->getFormat() != 'html') &&
             $this->hasComponent($component = $context->request->query->get('com', 'cmd'))
         ){
             // No need to route
