@@ -26,7 +26,7 @@ function koowa_bootstrap()
 
 	require_once $path;
 
-	$application = 'site';
+	$application = is_admin() ? 'admin' : 'site';
 
 	Koowa::getInstance(array(
 		'cache-namespace' => 'koowa-'.$application.'-'.md5(AUTH_KEY),
@@ -37,7 +37,7 @@ function koowa_bootstrap()
 	$loader = $manager->getClassLoader();
 
 	//Application Basepaths
-	$loader->registerBasepath('site', ABSPATH);
+	$loader->registerBasepath($application, ABSPATH);
 
 	//Component Locator
 	require_once dirname(__FILE__).'/components/koowa/class/locator/component.php';
@@ -59,8 +59,9 @@ function koowa_bootstrap()
 
 	//Setup the request
 	$manager->getObject('request')
-		->registerApplication($application, '')
+		->registerApplication('site', '')
+		->registerApplication('admin', '/wp-admin')
 		->setApplication($application);
 
-	add_action('init', array(KObjectManager::getInstance()->getObject('application'), 'run'));
+	add_action('init', array($manager->getObject('application'), 'run'));
 }
