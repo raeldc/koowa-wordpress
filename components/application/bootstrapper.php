@@ -42,6 +42,9 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                         'database'  => DB_NAME,
                     )
                 ),
+                'com:application.database.table.pages' => array(
+                    'name' => 'koowa_pages'
+                )
             )
         ));
 

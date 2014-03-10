@@ -35,6 +35,12 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         if($this->getRequest()->query->has('view')) {
             $this->_controller = $this->getRequest()->query->get('view', 'cmd');
         }
+
+        if (is_admin()) {
+            $this->addCommandCallback('before.route', '_getAdminPage');
+        } else {
+            $this->addCommandCallback('before.route', '_getSitePage');
+        }
     }
 
     /**
@@ -82,6 +88,10 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
             // No need to route
             $this->forward($component);
         }
+        // Try to see if the page is attached to a component view
+        else{
+            add_action('wp', array($this, 'route'));
+        }
     }
 
     /**
@@ -106,11 +116,11 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
     }
 
     /**
-     * Route the request for the admin section
-     *
-     * @param KDispatcherContextInterface $context   A dispatcher context object
+     * Get the query from the page
+     * @param  KDispatcherContextInterface $context
+     * @return void
      */
-    protected function _actionRoute(KDispatcherContextInterface $context)
+    protected function _getAdminPage(KDispatcherContextInterface $context)
     {
         if ($context->request->query->has('page'))
         {
@@ -119,7 +129,7 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
 
             if (strpos($page, '/') !== false)
             {
-                list($component, $view, $layout) = explode('/', $page, 3);
+                list($context->component, $view, $layout) = explode('/', $page, 3);
 
                 if (!$context->request->query->has('view')) {
                     $context->request->query->set('view', $view);
@@ -129,13 +139,61 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
                     $context->request->query->set('layout', $layout);
                 }
             }
-            else $component = $page;
+            else $context->component = $page;
 
-            //Forward the request only if the component is registered as a Koowa component
-            if ($this->hasComponent($component)) {
-                $this->forward($component);
+            if (!$this->hasComponent($context->component)) {
+                return false;
             }
         }
+    }
+
+    /**
+     * Get the query from the post
+     * @param  KDispatcherContextInterface $context
+     * @return void
+     */
+    protected function _getSitePage(KDispatcherContextInterface $context)
+    {
+        global $post;
+
+        if (!is_home() && $post)
+        {
+            $page = $this->getObject('com:application.model.pages')->setState(array(
+                'id' => $post->ID
+            ))->getItem();
+
+            // Return
+            if (!$page->isNew() && $this->hasComponent($page->query->component))
+            {
+                $context->component = $page->query->component;
+
+                if (!$context->request->query->has('view')) {
+                    $context->request->query->set('view', $page->query->view);
+                }
+
+                if (!$context->request->query->has('layout')) {
+                    $context->request->query->set('layout', $page->query->layout);
+                }
+
+                add_filter('the_content', array($context->response, 'getContent'));
+            }
+        }
+        else
+        {
+            // Cancel the command chain if page is not found
+            return false;
+        }
+    }
+
+    /**
+     * Route the request for the admin section
+     *
+     * @param KDispatcherContextInterface $context   A dispatcher context object
+     */
+    protected function _actionRoute(KDispatcherContextInterface $context)
+    {
+        //Forward the request only if the component is registered as a Koowa component
+        $this->forward($context->component);
     }
 
     /**
