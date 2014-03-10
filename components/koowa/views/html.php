@@ -75,7 +75,7 @@ class ComKoowaViewHtml extends KViewHtml
         }
 
         //Add the format information to the route only if it's not 'html'
-        if (!isset($parts['format']) && $parts['format'] !== 'html') {
+        if (!isset($parts['format']) && $parts['format'] != 'html' && $this->getFormat() !== 'html') {
             $parts['format'] = $this->getIdentifier()->name;
         }
 
@@ -108,7 +108,6 @@ class ComKoowaViewHtml extends KViewHtml
             $parts['page'] = $page;
         }
         else $parts['page'] = $this->getObject('request')->getQuery()->get('page', 'internalurl');
-
 
         $route = clone $this->getObject('request')->getUrl();
         $route->setQuery($parts);

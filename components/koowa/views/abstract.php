@@ -58,7 +58,7 @@ abstract class ComKoowaViewAbstract extends KViewAbstract
         }
 
         //Add the format information to the route only if it's not 'html'
-        if (!isset($parts['format']) && $parts['format'] !== 'html') {
+        if (!isset($parts['format']) && $parts['format'] != 'html' && $this->getFormat() !== 'html') {
             $parts['format'] = $this->getIdentifier()->name;
         }
 
