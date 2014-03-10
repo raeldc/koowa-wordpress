@@ -54,6 +54,12 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
 
         $this->getObject('lib:database.adapter.mysqli')->connect();
 
+        KStringInflector::addWord('settings', 'settings');
+
+        if (!is_admin()) {
+            add_shortcode('application', array($this->getObject('application'), 'shortcode'));
+        }
+
         // Boostrap other koowa extensions
         do_action('koowa_bootstrap');
         $this->getObject('lib:object.bootstrapper.chain')->bootstrap();

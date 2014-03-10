@@ -29,6 +29,10 @@ class ComKoowaDispatcherResponseTransportHttp extends KDispatcherResponseTranspo
 
         if ($request->isGet() && $request->getFormat() == 'html')
         {
+            if(headers_sent()){
+                return true;
+            }
+
             //Cookies
             foreach ($response->headers->getCookies() as $cookie)
             {

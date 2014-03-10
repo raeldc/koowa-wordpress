@@ -85,6 +85,27 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
     }
 
     /**
+     * Parse the shortcode
+     *
+     * @param KDispatcherContextInterface $context   A dispatcher context object
+     */
+    protected function _actionShortcode(KDispatcherContextInterface $context)
+    {
+        if ($context->param->has('component'))
+        {
+            $component = $context->param->component;
+            if ($this->hasComponent($component))
+            {
+                $context->param->remove('component');
+                $context->request->query->add($context->param->toArray());
+
+                $this->addCommandCallback('after.forward', '_actionRender');
+                $this->forward($component);
+            }
+        }
+    }
+
+    /**
      * Route the request for the admin section
      *
      * @param KDispatcherContextInterface $context   A dispatcher context object
