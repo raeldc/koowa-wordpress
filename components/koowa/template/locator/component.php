@@ -37,6 +37,11 @@ class ComKoowaTemplateLocatorComponent extends KTemplateLocatorComponent
         }
 
         $rootpath  = $this->getObject('manager')->getClassLoader()->getLocator('component')->getNamespace(ucfirst($identifier['package']));
+
+        if (empty($rootpath)) {
+            $rootpath = $this->getObject('manager')->getClassLoader()->getLocator('component')->getNamespace('\\');
+        }
+
         $rootpath .= empty($identifier['domain']) ? '' : '/'. $this->getObject('manager')->getClassLoader()->getBasepath($identifier['domain']);
 
         if ($parts[0] != 'view' && count($parts)) {
