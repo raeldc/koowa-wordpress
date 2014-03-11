@@ -37,7 +37,8 @@ function koowa_bootstrap()
 	$loader = $manager->getClassLoader();
 
 	//Application Basepaths
-	$loader->registerBasepath($application, ABSPATH);
+	$loader->registerBasepath('site', 'site');
+	$loader->registerBasepath('admin', 'admin');
 
 	//Component Locator
 	require_once dirname(__FILE__).'/components/koowa/class/locator/component.php';
@@ -45,9 +46,7 @@ function koowa_bootstrap()
 	$loader->registerLocator(
 		new ComKoowaClassLocatorComponent(array(
 			'namespaces' => array(
-				'\\'          => WP_PLUGIN_DIR,
-				'Koowa'       => WP_PLUGIN_DIR.'/koowa/components',
-				'Application' => WP_PLUGIN_DIR.'/koowa/components',
+				'\\'          => __DIR__,
 			)
 		))
 	);
@@ -55,7 +54,7 @@ function koowa_bootstrap()
 	$manager->registerLocator('lib:object.locator.component');
 
 	// Call the Bootstrapper
-	$manager->getObject('com:application.bootstrapper')->bootstrap($application);
+	$manager->getObject('com:application.bootstrapper')->bootstrap();
 
 	//Setup the request
 	$manager->getObject('request')

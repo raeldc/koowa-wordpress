@@ -220,7 +220,9 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         if(is_string($context->param) && strpos($context->param, '.') === false )
         {
             $identifier            = $this->getIdentifier()->toArray();
+            $identifier['domain']  = is_admin() ? 'admin' : 'site';
             $identifier['package'] = $context->param;
+
             $identifier            = $this->getIdentifier($identifier);
         }
         else $identifier = $this->getIdentifier($context->param);
@@ -262,9 +264,11 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
      */
     public function registerComponent($component, $dir)
     {
-        $this->getObject('manager')->getClassLoader()->getLocator('component')->registerNamespace(ucfirst($component), $dir.'/components');
+        $application = is_admin() ? 'admin' : 'site';
 
-        $this->getObject('lib:object.bootstrapper.chain')->addBootstrapper($this->getObject('com:'.$component.'.bootstrapper'));
+        $this->getObject('manager')->getClassLoader()->getLocator('component')->registerNamespace(ucfirst($component), $dir);
+
+        $this->getObject('lib:object.bootstrapper.chain')->addBootstrapper($this->getObject('com://'.$application.'/'.$component.'.bootstrapper'));
 
         $this->_registered_components[$component] = end(explode('/',$dir));
 

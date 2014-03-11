@@ -36,11 +36,8 @@ class ComKoowaTemplateLocatorComponent extends KTemplateLocatorComponent
             $parts     = $identifier['path'];
         }
 
-        if(!empty($identifier['domain'])) {
-            $rootpath = $this->getObject('manager')->getClassLoader()->getBasepath($identifier['domain']);
-        } else {
-            $rootpath  = $this->getObject('manager')->getClassLoader()->getLocator('component')->getNamespace(ucfirst($identifier['package']));
-        }
+        $rootpath  = $this->getObject('manager')->getClassLoader()->getLocator('component')->getNamespace(ucfirst($identifier['package']));
+        $rootpath .= empty($identifier['domain']) ? '' : '/'. $this->getObject('manager')->getClassLoader()->getBasepath($identifier['domain']);
 
         if ($parts[0] != 'view' && count($parts)) {
             $filepath  = 'views/'.implode('/', $parts).'/tmpl';
@@ -48,6 +45,8 @@ class ComKoowaTemplateLocatorComponent extends KTemplateLocatorComponent
         else $filepath  = 'views/tmpl';
 
         // Find the template
-        return $this->realPath($rootpath.'/'.$identifier['package'].'/'.$filepath.'/'.$template.'.'.$format.'.php');
+        $realpath = $rootpath.'/components/'.$identifier['package'].'/'.$filepath.'/'.$template.'.'.$format.'.php';
+
+        return $this->realPath($realpath);
     }
 }

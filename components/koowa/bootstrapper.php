@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Koowa\Wordpress\Bootstrapper
  */
-abstract class ComKoowaBootstrapper extends KObjectBootstrapperComponent
+class ComKoowaBootstrapper extends KObjectBootstrapperComponent
 {
     protected $_has_adminmenu;
     /**
