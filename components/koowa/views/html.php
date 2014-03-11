@@ -104,6 +104,10 @@ class ComKoowaViewHtml extends KViewHtml
             'layout' => null
         ), $parts);
 
+        if ($parts['layout'] == 'default') {
+            unset($parts['layout']);
+        }
+
         if ($page = $this->getPage($parts)) {
             $parts['page'] = $page;
         }
