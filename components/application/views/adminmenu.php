@@ -13,30 +13,17 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Koowa\Wordpress\View\Adminmenu
  */
-class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable, KObjectMultiton
+class ComApplicationViewAdminmenu extends KViewTemplate
 {
     protected $_registered_adminmenu = array();
-    protected $_registered_submenu = array();
+    protected $_registered_submenu   = array();
+    protected $_tmpl                 = '';
 
-    /**
-     * Force creation of a singleton
-     *
-     * @param  KObjectConfigInterface  $config  Configuration options
-     * @param  KObjectManagerInterface $manager A KObjectManagerInterface object
-     * @return KDispatcherDefault
-     */
-    public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
+    public function __construct(KObjectConfig $config)
     {
-        // Check if an instance with this identifier already exists or not
-        if (!$manager->isRegistered($config->object_identifier))
-        {
-            //Create the singleton
-            $class    = $manager->getClass($config->object_identifier);
-            $instance = new $class($config);
-            $manager->setObject($config->object_identifier, $instance);
-        }
+        parent::__construct($config);
 
-        return $manager->getObject($config->object_identifier);
+        $this->_tmpl = $config->tmpl;
     }
 
 	/**
@@ -49,6 +36,10 @@ class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable
      */
     protected function _initialize(KObjectConfig $config)
     {
+        $config->append(array(
+            'tmpl' => ''
+        ));
+
         parent::_initialize($config);
 
         $config->template_filters = array('adminmenu', 'submenu');
@@ -63,12 +54,11 @@ class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable
      */
     protected function _actionRender(KViewContext $context)
     {
-        //Handle partial layout paths
-        $identifier         = $this->getIdentifier()->toArray();
-        $identifier['path'] = array('view');
-        $identifier['name'] = 'adminmenu';
+        if (empty($this->_tmpl)) {
+            return;
+        }
 
-        $layout = (string) $this->getIdentifier($identifier);
+        $layout = (string) $this->getIdentifier($this->_tmpl);
 
         //Render the template
         $this->_content = (string) $this->getTemplate()
@@ -76,6 +66,18 @@ class ComKoowaViewAdminmenu extends KViewTemplate implements KObjectInstantiable
             ->compile()
             ->evaluate()
             ->render();
+    }
+
+    public function setTmpl($tmpl)
+    {
+        $this->_tmpl = $tmpl;
+
+        return $this;
+    }
+
+    public function getTmpl()
+    {
+        return $this->getIdentifier($this->_tmpl);
     }
 
     public function registerAdminmenu($page)

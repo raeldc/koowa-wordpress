@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Koowa\Wordpress\Template\Filter
  */
-class ComKoowaTemplateFilterSubmenu extends ComKoowaTemplateFilterTag
+class ComApplicationTemplateFilterSubmenu extends ComKoowaTemplateFilterTag
 {
     /**
      * Render the tag
@@ -41,7 +41,7 @@ class ComKoowaTemplateFilterSubmenu extends ComKoowaTemplateFilterTag
                 'parent_page'  => $parent,
             ));
 
-            $page = $this->getIdentifier()->package;
+            $page = $this->getTemplate()->getView()->getTmpl()->package;
 
             if (!empty($tag->component)) {
                 $page = $tag->component;

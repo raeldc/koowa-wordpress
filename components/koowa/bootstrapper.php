@@ -48,10 +48,16 @@ class ComKoowaBootstrapper extends KObjectBootstrapperComponent
 
     public function getAdminmenu()
     {
-        $identifier         = $this->getIdentifier()->toArray();
+        $identifier         = $this->getObject('application')->getIdentifier()->toArray();
         $identifier['path'] = array('view');
         $identifier['name'] = 'adminmenu';
+        $identifier         = $this->getIdentifier($identifier);
 
-        return $this->getObject($this->getIdentifier($identifier));
+        $tmpl         = $this->getIdentifier()->toArray();
+        $tmpl['path'] = array('view');
+        $tmpl['name'] = 'adminmenu';
+        $tmpl         = $this->getIdentifier($tmpl);
+
+        return $this->getObject($identifier)->setTmpl($tmpl);
     }
 }

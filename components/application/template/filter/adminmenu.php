@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Koowa\Wordpress\Template\Filter
  */
-class ComKoowaTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
+class ComApplicationTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
 {
     /**
      * Initializes the options for the object
@@ -52,7 +52,7 @@ class ComKoowaTemplateFilterAdminmenu extends ComKoowaTemplateFilterTag
                 'position'   => null
             ));
 
-            $page = $this->getIdentifier()->package;
+            $page = $this->getTemplate()->getView()->getTmpl()->package;
 
             if (!empty($tag->component)) {
                 $page = $tag->component;
