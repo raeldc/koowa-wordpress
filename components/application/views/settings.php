@@ -68,9 +68,28 @@ class ComApplicationViewSettings extends ComKoowaViewHtml
      */
     protected function _fetchData(KViewContext $context)
     {
-        $component = $this->getObject('dispatcher')->getIdentifier()->package;
-        $layouts   = $this->getObject('com://site/'.$component.'.model.viewlayouts');
+        $pages       = $this->getObject('com:application.model.pages');
+        $layouts     = $this->getObject('lib:object.set');
+        $component   = $this->getObject('dispatcher')->getIdentifier()->package;
+        $viewlayouts = $this->getObject('com://site/'.$component.'.model.viewlayouts')->getList();
 
-        $context->data->layouts = $layouts->getList();
+        // Get all pages attached to this component.
+        $pages->getState()->component = $component;
+        $existing_pages               = $pages->getList();
+
+        foreach ($viewlayouts as $viewlayout)
+        {
+            foreach ($existing_pages as $page)
+            {
+                // Add the page id on the layouts it is attached to.
+                if ($viewlayout->view == $page->view && $viewlayout->layout == $page->layout) {
+                    $viewlayout->id = $page->id;
+                }
+            }
+
+            $layouts->insert($viewlayout);
+        }
+
+        $context->data->layouts = $layouts;
     }
 }
