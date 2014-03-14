@@ -5,12 +5,17 @@ class ComApplicationDatabaseRowSettings extends KDatabaseRowTable
     public function save()
     {
         $component = $this->component;
-        $settings  = $this->getObject('lib:object.config.factory')->getFormat('ini');
-        $settings->add(array_merge((array)$this->settings, array('last_modified' => date( 'Y-m-d H:i:s'))));
 
         if ($this->pages) {
             $this->savePages($this->pages);
         }
+
+        if (!$this->settings) {
+            return KDatabase::STATUS_UPDATED;
+        }
+
+        $settings = $this->settings;
+        $settings->set('last_modified', date( 'Y-m-d H:i:s'));
 
         $this->reset();
 
@@ -75,14 +80,20 @@ class ComApplicationDatabaseRowSettings extends KDatabaseRowTable
         return $this;
     }
 
-    public function __get($key)
+    public function __set($key, $value)
     {
-        $result = $this->offsetGet($key);
-
-        if ($key == 'settings' && is_string($result)) {
-            $result = $this->getObject('lib:object.config.factory')->getFormat('ini')->fromString($result);
+        if ($key == 'settings')
+        {
+            if ( (is_array($value) && !($value instanceof KObjectConfigIni)) || empty($value) )
+            {
+                $query = $this->getObject('lib:object.config.factory')->getFormat('ini');
+                $query->add((array)$value);
+                $value = $query;
+            }elseif (is_string($value)) {
+                $value = $this->getObject('lib:object.config.factory')->getFormat('ini')->fromString($value);
+            }
         }
 
-        return $result;
+        $this->offsetSet($key, $value);
     }
 }
