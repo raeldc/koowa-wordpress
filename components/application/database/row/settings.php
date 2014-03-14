@@ -36,7 +36,7 @@ class ComApplicationDatabaseRowSettings extends KDatabaseRowTable
                 continue;
             }
 
-            $page['component']           = $component;
+            $page['component']           = $this->component;
             $assigned_pages[$page['id']] = $page;
         }
 
@@ -64,7 +64,7 @@ class ComApplicationDatabaseRowSettings extends KDatabaseRowTable
 
         // Delete others that are not assigned
         $pagesmodel->reset()->getState()->setValues(array(
-            'component' => $component,
+            'component' => $this->component,
             'exclude' => $updated_pages
         ));
 
