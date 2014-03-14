@@ -170,16 +170,16 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
             ))->getItem();
 
             // Return
-            if (!$page->isNew() && $this->hasComponent($page->query->component))
+            if (!$page->isNew() && $this->hasComponent($page->component))
             {
-                $context->component = $page->query->component;
+                $context->component = $page->component;
 
                 if (!$context->request->query->has('view')) {
-                    $context->request->query->set('view', $page->query->view);
+                    $context->request->query->set('view', $page->view);
                 }
 
                 if (!$context->request->query->has('layout')) {
-                    $context->request->query->set('layout', $page->query->layout);
+                    $context->request->query->set('layout', $page->layout);
                 }
 
                 add_filter('the_content', array($context->response, 'getContent'));
