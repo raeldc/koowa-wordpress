@@ -33,15 +33,6 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                 'lib:dispatcher.response.transport.http' => 'com:koowa.dispatcher.response.transport.http'
             ),
             'configs' => array(
-                'lib:database.adapter.mysqli' => array(
-                    'table_prefix'  => $wpdb->prefix,
-                    'options'       => array(
-                        'host'      => DB_HOST,
-                        'username'  => DB_USER,
-                        'password'  => DB_PASSWORD,
-                        'database'  => DB_NAME,
-                    )
-                ),
                 'com:application.database.table.pages' => array(
                     'name' => 'koowa_pages'
                 ),
@@ -52,14 +43,40 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
             )
         ));
 
+        if ($wpdb->use_mysqli)
+        {
+            $config->configs->append(array(
+                    'lib:database.adapter.mysqli' => array(
+                        'connection'    => $wpdb->dbh,
+                        'table_prefix'  => $wpdb->prefix,
+                    ),
+            ));
+        }
+        else
+        {
+            $config->configs->append(array(
+                    'lib:database.adapter.mysqli' => array(
+                        'table_prefix'  => $wpdb->prefix,
+                        'options'       => array(
+                            'host'      => DB_HOST,
+                            'username'  => DB_USER,
+                            'password'  => DB_PASSWORD,
+                            'database'  => DB_NAME,
+                        )
+                    ),
+            ));
+        }
+
         parent::_initialize($config);
     }
 
     public function bootstrap()
     {
+        global $wpdb;
+
         parent::bootstrap();
 
-        $this->getObject('lib:database.adapter.mysqli')->connect();
+        if (!$wpdb->use_mysqli) $this->getObject('lib:database.adapter.mysqli')->connect();
 
         KStringInflector::addWord('settings', 'settings');
 
