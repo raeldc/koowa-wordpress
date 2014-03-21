@@ -13,8 +13,22 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Koowa\Wordpress\Translator
  */
-final class ComKoowaTranslatorDefault extends KTranslatorAbstract implements KObjectInstantiable, KObjectSingleton
+final class ComKoowaTranslatorDefault extends ComKoowaTranslatorAbstract implements KObjectInstantiable, KObjectSingleton
 {
+    /**
+     * List of loaded domains
+     * 
+     * @var array
+     */
+    protected $_loaded_domains = array();
+
+    /**
+     * Map component names to domain
+     * 
+     * @var array
+     */
+    protected $_domain_map = array();
+
     /**
      * Force creation of a singleton
      *
@@ -37,21 +51,31 @@ final class ComKoowaTranslatorDefault extends KTranslatorAbstract implements KOb
         return $manager->getObject('translator');
     }
 
-    /**
-     * Load the component language files.
-     *
-     * @param string|KObjectIdentifier $extension Extension identifier or name (e.g. com_files)
-     * @param string $app Application. Leave blank for current one.
-     *
-     * @return boolean
-     */
-    public function loadTranslations($extension, $app = null)
+    public function loadTranslations($component, $app = null)
     {
-        return false;
+        $domain = $this->getComponentDomain($component);
+
+        if(!isset($this->_loaded_domains[$domain]) && load_plugin_textdomain($domain, false, $domain.'/languages/')){
+            $this->_loaded_domains[$domain] = true;
+        }
     }
 
-    public function translate($string, array $parameters = array())
+    public function registerComponentDomain($component, $domain = '')
     {
-        return __( $string);
+        $this->_domain_map[$component] = empty($domain) ? $component: $domain;
+    }
+
+    public function getComponentDomain($component)
+    {
+        if (isset($this->_domain_map[$component])) {
+            return $this->_domain_map[$component];
+        }
+
+        return 'default';
+    }
+
+    public function wptranslate($string, $parameters, $domain = 'default')
+    {
+        return KTranslatorAbstract::translate(__($string, $domain), $parameters);
     }
 }
