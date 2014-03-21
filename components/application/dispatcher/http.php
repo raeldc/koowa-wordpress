@@ -270,7 +270,9 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
 
         $this->getObject('lib:object.bootstrapper.chain')->addBootstrapper($this->getObject('com://'.$application.'/'.$component.'.bootstrapper'));
 
-        $this->_registered_components[$component] = end(explode('/',$dir));
+        $component_dir = basename($dir);
+        $this->_registered_components[$component] = $component_dir;
+        $this->getObject('translator')->registerComponentDomain($component, $component_dir);
 
         return $this;
     }
