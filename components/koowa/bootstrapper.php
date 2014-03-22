@@ -32,6 +32,9 @@ class ComKoowaBootstrapper extends KObjectBootstrapperComponent
     {
         $config->append(array(
             'has_adminmenu' => true,
+            'aliases' => array(
+                'translator.'.$this->getIdentifier()->package => 'com:koowa.translator.'.$this->getIdentifier()->package
+            )
         ));
 
         parent::_initialize($config);

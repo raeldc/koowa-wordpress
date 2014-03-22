@@ -36,8 +36,18 @@ abstract class ComKoowaTranslatorAbstract extends KTranslatorAbstract
     public function translate($string, array $parameters = array())
     {
         $translator = $this->getObject('translator');
-        $domain     = $translator->getComponentDomain($this->getIdentifier()->package);
+        $domain     = $translator->getComponentDomain($this->getIdentifier()->name);
+
+        // Make sure translations for this component has been loaded
+        if ($translator !== $this) {
+            $this->loadTranslations($this->getIdentifier()->name);
+        }
 
         return $translator->wptranslate($string, $parameters, $domain);
+    }
+
+    public function translateParameters($string, $parameters)
+    {
+        return KTranslatorAbstract::translate($string, $parameters);
     }
 }
