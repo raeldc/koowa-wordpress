@@ -26,7 +26,7 @@ class ComKoowaViewHtml extends KViewHtml
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'template_filters' => array('help', 'script')
+            'template_filters' => array('help', 'script', 'style')
         ));
 
         parent::_initialize($config);
