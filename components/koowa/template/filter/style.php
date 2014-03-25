@@ -79,7 +79,7 @@ class ComKoowaTemplateFilterStyle extends KTemplateFilterStyle
     }
 
     /**
-     * Send the generated header scripts to the browser
+     * Send the generated header styles to the browser
      * @return void
      */
     public function renderStyles()
