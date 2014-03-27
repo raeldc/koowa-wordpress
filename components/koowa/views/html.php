@@ -104,11 +104,6 @@ class ComKoowaViewHtml extends KViewHtml
             'layout' => null
         ), $parts);
 
-        if ($page = $this->getPage($parts)) {
-            $parts['page'] = $page;
-        }
-        else $parts['page'] = $this->getObject('request')->getQuery()->get('page', 'internalurl');
-
         if ($parts['layout'] == 'default') {
             unset($parts['layout']);
         }
@@ -116,6 +111,11 @@ class ComKoowaViewHtml extends KViewHtml
         if ($parts['format'] == 'html') {
             unset($parts['format']);
         }
+
+        if ($page = $this->getPage($parts)) {
+            $parts['page'] = $page;
+        }
+        else $parts['page'] = $this->getObject('request')->getQuery()->get('page', 'internalurl');
 
         $route = clone $this->getObject('request')->getUrl();
         $route->setQuery($parts);
