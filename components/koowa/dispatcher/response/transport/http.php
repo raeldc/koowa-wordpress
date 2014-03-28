@@ -27,12 +27,8 @@ class ComKoowaDispatcherResponseTransportHttp extends KDispatcherResponseTranspo
     {
         $request = $response->getRequest();
 
-        if ($request->isGet() && $request->getFormat() == 'html')
+        if (!headers_sent())
         {
-            if(headers_sent()){
-                return true;
-            }
-
             //Cookies
             foreach ($response->headers->getCookies() as $cookie)
             {
@@ -61,10 +57,11 @@ class ComKoowaDispatcherResponseTransportHttp extends KDispatcherResponseTranspo
                 }
             }
             */
-
-            return true;
+            if ($request->isAjax() || !$request->isGet() || $request->getFormat() != 'html') {
+                parent::send($response);
+            }
         }
 
-        return parent::send($response);
+        return true;
     }
 }
