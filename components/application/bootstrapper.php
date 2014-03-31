@@ -15,6 +15,15 @@
  */
 class ComApplicationBootstrapper extends KObjectBootstrapperComponent
 {
+    protected $_components = array();
+
+    public function __construct(KObjectConfig $config)
+    {
+        parent::__construct($config);
+
+        $this->_components = $config->components;
+    }
+
     protected function _initialize(KObjectConfig $config)
     {
         global $wpdb;
@@ -78,15 +87,20 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
 
         if (!$wpdb->use_mysqli) $this->getObject('lib:database.adapter.mysqli')->connect();
 
-        KStringInflector::addWord('settings', 'settings');
+        foreach ($this->_components as $component => $config)
+        {
+            if ($config instanceof KObjectConfigInterface)
+            {
+                if (!empty($config->path)) {
+                    $this->getObject('application')->registerComponent($component, $config->path);
+                }
 
-        if (!is_admin()) {
-            add_shortcode('application', array($this->getObject('application'), 'shortcode'));
+                if (is_admin() && $config->adminmenu) {
+                    add_filter('admin_menu', array($this->getObject('application')->getAdminmenu($component), 'render'));
+                }
+            }
+            elseif(is_string($config)) $this->getObject('application')->registerComponent($component, $config);
         }
-
-        // Boostrap other koowa extensions
-        do_action('koowa_bootstrap');
-        $this->getObject('lib:object.bootstrapper.chain')->bootstrap();
     }
 
     public function getHandle()

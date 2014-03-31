@@ -53,6 +53,9 @@ function koowa_bootstrap()
 
 	$manager->registerLocator('lib:object.locator.component');
 
+    // Boostrap other koowa extensions
+    do_action('koowa_bootstrap');
+
 	// Call the Bootstrapper
 	$manager->getObject('com:application.bootstrapper')->bootstrap();
 
@@ -63,4 +66,6 @@ function koowa_bootstrap()
 		->setApplication($application);
 
 	add_action('init', array($manager->getObject('application'), 'run'));
+
+	KStringInflector::addWord('settings', 'settings');
 }

@@ -31,11 +31,6 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
     {
         parent::__construct($config);
 
-        //Force the controller to the information found in the request
-        if($this->getRequest()->query->has('view')) {
-            $this->_controller = $this->getRequest()->query->get('view', 'cmd');
-        }
-
         if (is_admin()) {
             $this->addCommandCallback('before.route', '_getAdminPage');
         } else {
@@ -91,27 +86,6 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
         // Try to see if the page is attached to a component view
         else{
             add_action('wp', array($this, 'route'));
-        }
-    }
-
-    /**
-     * Parse the shortcode
-     *
-     * @param KDispatcherContextInterface $context   A dispatcher context object
-     */
-    protected function _actionShortcode(KDispatcherContextInterface $context)
-    {
-        if ($context->param->has('component'))
-        {
-            $component = $context->param->component;
-            if ($this->hasComponent($component))
-            {
-                $context->param->remove('component');
-                $context->request->query->add($context->param->toArray());
-
-                $this->addCommandCallback('after.forward', '_actionRender');
-                $this->forward($component);
-            }
         }
     }
 
@@ -295,5 +269,23 @@ class ComApplicationDispatcherHttp extends KDispatcherAbstract implements KObjec
     public function getComponentDir($component)
     {
         return isset($this->_registered_components[$component]) ? $this->_registered_components[$component] : false;
+    }
+
+
+    public function getAdminmenu($component)
+    {
+        $identifier = $tmpl = $this->getIdentifier()->toArray();
+
+        $identifier['path'] = array('view');
+        $identifier['name'] = 'adminmenu';
+        $identifier         = $this->getIdentifier($identifier);
+
+        $tmpl['domain']  = 'admin';
+        $tmpl['package'] = $component;
+        $tmpl['path']    = array('view');
+        $tmpl['name']    = 'adminmenu';
+        $tmpl            = $this->getIdentifier($tmpl);
+
+        return $this->getObject($identifier)->setTmpl($tmpl);
     }
 }
