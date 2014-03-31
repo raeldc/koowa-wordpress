@@ -71,7 +71,11 @@ class ComApplicationViewSettings extends ComKoowaViewHtml
         $pages       = $this->getObject('com:application.model.pages');
         $layouts     = $this->getObject('lib:object.set');
         $component   = $this->getObject('dispatcher')->getIdentifier()->package;
-        $viewlayouts = $this->getObject('com://site/'.$component.'.model.viewlayouts')->getList();
+        $viewlayouts = $this->getObject('com:application.model.viewlayouts')->component($component)->getList();
+
+        if (empty($viewlayouts)) {
+            return;
+        }
 
         // Get all pages attached to this component.
         $pages->getState()->component = $component;
