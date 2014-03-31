@@ -49,7 +49,8 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                     'name'            => 'koowa_settings',
                     'identity_column' => ''
                 )
-            )
+            ),
+            'components' => array()
         ));
 
         if ($wpdb->use_mysqli)
@@ -100,6 +101,8 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                 }
             }
             elseif(is_string($config)) $this->getObject('application')->registerComponent($component, $config);
+
+            $this->getObjectManager()->registerAlias('com:koowa.translator.'.$component, 'translator.'.$component);
         }
     }
 
