@@ -37,7 +37,6 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
                 'application'                            => 'com:application.dispatcher.http',
                 'event.publisher'                        => 'com:koowa.event.publisher',
                 'exception.handler'                      => 'com:koowa.exception.handler',
-                'lib:object.bootstrapper.chain'          => 'com:koowa.object.bootstrapper.chain',
                 'lib:template.locator.component'         => 'com:koowa.template.locator.component',
                 'lib:dispatcher.response.transport.http' => 'com:koowa.dispatcher.response.transport.http'
             ),

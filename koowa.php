@@ -59,6 +59,9 @@ function koowa_bootstrap()
 	// Call the Bootstrapper
 	$manager->getObject('com:application.bootstrapper')->bootstrap();
 
+	// Boostrap other koowa extensions
+    do_action('koowa_bootstrapped');
+
 	//Setup the request
 	$manager->getObject('request')
 		->registerApplication('site', '')
