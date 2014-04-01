@@ -29,8 +29,8 @@ function koowa_bootstrap()
 	$application = is_admin() ? 'admin' : 'site';
 
 	Koowa::getInstance(array(
-		'cache-namespace' => 'koowa-'.$application.'-'.md5(AUTH_KEY),
-		'cache-enabled' => false
+		'cache_namespace' => 'koowa-'.$application,
+		'cache_enabled' => extension_loaded('apc')
 	));
 
 	$manager = KObjectManager::getInstance();
