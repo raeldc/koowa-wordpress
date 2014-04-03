@@ -16,17 +16,6 @@
 class ComKoowaTemplateFilterStyle extends KTemplateFilterStyle
 {
     /**
-     * An array of MD5 hashes for loaded style strings
-     */
-    protected $_loaded = array();
-
-    /**
-     * String of Styles
-     * @var string
-     */
-    protected $_styles = '';
-
-    /**
      * Find any virtual tags and render them
      *
      * This function will pre-pend the tags to the content
@@ -47,43 +36,27 @@ class ComKoowaTemplateFilterStyle extends KTemplateFilterStyle
      */
     protected function _renderTag($attribs = array(), $content = null)
     {
-        $link      = isset($attribs['src']) ? $attribs['src'] : false;
-        $condition = isset($attribs['condition']) ? $attribs['condition'] : false;
+        $link         = isset($attribs['src']) ? $attribs['src'] : false;
+        $condition    = isset($attribs['condition']) ? $attribs['condition'] : false;
+        $dependencies = array();
 
-        if(!$link)
+        // Get dependencies
+        if (isset($attribs['dependencies']))
         {
-            $style = parent::_renderTag($attribs, $content);
-            $hash  = md5($style.serialize($attribs));
+            $dependencies = explode(',', $attribs['dependencies']);
+            array_walk($dependencies, 'trim');
+        }
 
-            if (!isset($this->_loaded[$hash]))
-            {
-                $this->_loaded[$hash] = true;
-                $this->_styles .= $style;
-                add_action(is_admin() ? 'admin_head' : 'wp_head', array($this, 'renderStyles'));
-            }
+        if (!$link || $condition) {
+            $this->getObject('document')->addStyle(parent::_renderTag($attribs, $content));
         }
         else
         {
-            if($condition)
-            {
-                $this->_styles .= parent::_renderTag($attribs, $content);
-                add_action(is_admin() ? 'admin_head' : 'wp_head', array($this, 'renderStyles'));
-            }
-            else
-            {
-                $hash = md5($link);
-                wp_register_style($hash, $link);
-                wp_enqueue_style($hash);
-            }
+            $this->getObject('document')->addStyle(array_merge(
+                $attribs, array(
+                    'dependencies' => $dependencies
+                )
+            ));
         }
-    }
-
-    /**
-     * Send the generated header styles to the browser
-     * @return void
-     */
-    public function renderStyles()
-    {
-        echo $this->_styles;
     }
 }

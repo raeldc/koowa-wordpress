@@ -33,6 +33,7 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
             'aliases'  => array(
                 'date'                                   => 'com:koowa.date',
                 'request'                                => 'lib:dispatcher.request',
+                'document'                               => 'com:application.view.html',
                 'translator'                             => 'com:koowa.translator',
                 'application'                            => 'com:application.dispatcher.http',
                 'event.publisher'                        => 'com:koowa.event.publisher',

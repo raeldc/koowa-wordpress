@@ -16,21 +16,6 @@
 class ComKoowaTemplateFilterScript extends KTemplateFilterScript
 {
     /**
-     * @var string
-     */
-    protected $_footer_scripts = '';
-
-    /**
-     * @var string
-     */
-    protected $_header_scripts = '';
-
-    /**
-     * An array of MD5 hashes for loaded script strings
-     */
-    protected $_loaded = array();
-
-    /**
      * Find any virtual tags and render them
      *
      * This function will pre-pend the tags to the content
@@ -51,49 +36,33 @@ class ComKoowaTemplateFilterScript extends KTemplateFilterScript
      */
     protected function _renderTag($attribs = array(), $content = null)
     {
-        global $wp_scripts;
+        $location     = !isset($attribs['location']) || $attribs['location'] !== 'header' ? 'footer': 'header';
+        $link         = isset($attribs['src']) ? $attribs['src'] : false;
+        $dependencies = array();
 
-        $link = isset($attribs['src']) ? $attribs['src'] : false;
-        $condition = isset($attribs['condition']) ? $attribs['condition'] : false;
+        unset($attribs['location']);
+
+        // Get dependencies
+        if (isset($attribs['dependencies']))
+        {
+            $dependencies = explode(',', $attribs['dependencies']);
+            array_walk($dependencies, 'trim');
+            unset($attribs['dependencies']);
+        }
 
         if(!$link)
         {
-            $location = (isset($attribs['location'])) ? $attribs['location'] : '';
-            unset($attribs['location']);
-
             $attributes = $this->buildAttributes($attribs);
             $html  = '<script '.$attributes.'>'."\n";
             $html .= trim($content);
             $html .= '</script>'."\n";
 
-            if ($location == 'header')
-            {
-                if (empty($this->_header_scripts)) {
-                    add_action(is_admin() ? 'admin_head' : 'wp_head', array($this, 'renderHeaderScripts'));
-                }
-
-                $this->_header_scripts .= $html;
-            }
-            else 
-            {
-                if (empty($this->_footer_scripts)) {
-                    add_action(is_admin() ? 'admin_footer' : 'wp_footer',  array($this, 'renderFooterScripts'));
-                }
-
-                $this->_footer_scripts .= $html;
-            }
+            $this->getObject('document')->addScript($html, $location, $dependencies);
         }
         else
         {
             unset($attribs['src']);
             unset($attribs['condition']);
-
-            // Get dependencies
-            if (isset($attribs['dependencies']))
-            {
-                $dependencies = explode(',', $attribs['dependencies']);
-                array_walk($dependencies, 'trim');
-            }
 
             $name = (isset($attribs['name'])) ? $attribs['name'] : str_replace('.js', '', end(explode('/', $link)));
             unset($attribs['name']);
@@ -101,32 +70,13 @@ class ComKoowaTemplateFilterScript extends KTemplateFilterScript
             $version = isset($attribs['version']) ? $attribs['version']: false;
             unset($attribs['version']);
 
-            $footer = isset($attribs['location']) && $attribs['location'] == 'footer' ? true: false;
-            unset($attribs['location']);
-
-            $attributes = $this->buildAttributes($attribs);
-
-            wp_register_script($name, $link, $dependencies, $version, $footer);
-
-            wp_enqueue_script($name);
+            $this->getObject('document')->addScript(array(
+                'name'         => $name,
+                'link'         => $link,
+                'dependencies' => $dependencies,
+                'version'      => $version,
+                'footer'       => $location === 'footer'
+            ));
         }
-    }
-
-    /**
-     * Send the generated header scripts to the browser
-     * @return void
-     */
-    public function renderHeaderScripts()
-    {
-        echo $this->_header_scripts;
-    }
-
-    /**
-     * Send the generated footer scripts to the browser
-     * @return void
-     */
-    public function renderFooterScripts()
-    {
-        echo $this->_footer_scripts;
     }
 }

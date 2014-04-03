@@ -1,0 +1,31 @@
+@import "variables";
+$icon-font-path: "../fonts/";
+@import "glyphicons";
+
+.bs {
+    @import "mixins";
+
+    @import "print";
+
+    @import "scaffolding";
+    @import "grid";
+
+    @import "type";
+    @import "progress-bars";
+    @import "panels";
+    @import "list-group";
+    @import "forms";
+    @import "buttons";
+    @import "input-groups";
+
+    @import "media";
+    @import "thumbnails";
+
+    // Utility classes
+    @import "utilities";
+    @import "component-animations";
+
+    .progress-bar-loading    {
+        @include progress-bar-variant(#ddd);
+    }
+}
