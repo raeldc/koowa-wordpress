@@ -4,28 +4,25 @@ class ComApplicationDatabaseRowSettings extends KDatabaseRowTable
 {
     public function save()
     {
-        $component = $this->component;
+        $settings = $this->getObject('settings.'.$this->component);
 
-        if ($this->pages) {
+        if ($this->pages)
+        {
             $this->savePages($this->pages);
+            $this->remove('pages');
         }
 
-        if (!$this->settings) {
-            return KDatabase::STATUS_UPDATED;
+        $this->remove('settings');
+
+        foreach ($this as $key => $value)
+        {
+            if (!preg_match('/^_(.*)/', $key) && $key !== 'settings' && $key !== 'component' && !is_numeric($key)) {
+                $settings->$key = $value;
+            }
         }
 
-        $settings = $this->settings;
-        $settings->set('last_modified', date( 'Y-m-d H:i:s'));
-
-        $this->reset();
-
-        // Load previous settings - add the settings if it doesn't exist yet, but update if exists.
-        $this->component = $component;
-        $this->load();
-
-        $this->settings = $settings;
-
-        return parent::save();
+        $settings->save();
+        $this->setStatus($settings->getStatus());
     }
 
     public function savePages(array $pages = array())
@@ -78,22 +75,5 @@ class ComApplicationDatabaseRowSettings extends KDatabaseRowTable
         }
 
         return $this;
-    }
-
-    public function __set($key, $value)
-    {
-        if ($key == 'settings')
-        {
-            if ( (is_array($value) && !($value instanceof KObjectConfigIni)) || empty($value) )
-            {
-                $query = $this->getObject('lib:object.config.factory')->getFormat('ini');
-                $query->add((array)$value);
-                $value = $query;
-            }elseif (is_string($value)) {
-                $value = $this->getObject('lib:object.config.factory')->getFormat('ini')->fromString($value);
-            }
-        }
-
-        $this->offsetSet($key, $value);
     }
 }

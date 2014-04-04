@@ -1,0 +1,17 @@
+.bs .settings-header {
+  text-align: center;
+  color: #5A5A5A;
+  margin-bottom: 30px; }
+.bs .settings-body {
+  background-color: #fff;
+  max-width: 600px;
+  padding: 10px 30px 30px 30px;
+  margin-top: 30px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 1px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.175); }
+.bs .action-buttons {
+  text-align: center;
+  margin-top: 40px; }
+.bs .settings-form .control-label.multiline {
+  padding-top: 0; }

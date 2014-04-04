@@ -1,29 +1,55 @@
 @import "variables";
 $icon-font-path: "../fonts/";
 @import "glyphicons";
+@import "mixins";
 
 .bs {
-    @import "mixins";
 
+    // Reset
+    @import "normalize";
     @import "print";
 
+    // Core CSS
     @import "scaffolding";
-    @import "grid";
-
     @import "type";
-    @import "progress-bars";
-    @import "panels";
-    @import "list-group";
+    @import "code";
+    @import "grid";
+    @import "tables";
     @import "forms";
     @import "buttons";
-    @import "input-groups";
 
-    @import "media";
+    // Components
+    @import "component-animations";
+    @import "glyphicons";
+    @import "dropdowns";
+    @import "button-groups";
+    @import "input-groups";
+    @import "navs";
+    @import "navbar";
+    @import "breadcrumbs";
+    @import "pagination";
+    @import "pager";
+    @import "labels";
+    @import "badges";
+    @import "jumbotron";
     @import "thumbnails";
+    @import "alerts";
+    @import "progress-bars";
+    @import "media";
+    @import "list-group";
+    @import "panels";
+    @import "wells";
+    @import "close";
+
+    // Components w/ JavaScript
+    @import "modals";
+    @import "tooltip";
+    @import "popovers";
+    @import "carousel";
 
     // Utility classes
     @import "utilities";
-    @import "component-animations";
+    @import "responsive-utilities";
 
     .progress-bar-loading    {
         @include progress-bar-variant(#ddd);

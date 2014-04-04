@@ -97,7 +97,9 @@ final class ComApplicationViewSettings extends ComKoowaViewHtml
     protected function _fetchData(KViewContext $context)
     {
         $this->_getViewLayouts($context);
-        $this->_getSettings($context);
+
+        // Get settings
+        $context->data->settings = $this->getObject('settings.'.$this->getObject('dispatcher')->getIdentifier()->package);
     }
 
     protected function _getViewLayouts(KViewContext $context)
@@ -132,10 +134,5 @@ final class ComApplicationViewSettings extends ComKoowaViewHtml
 
             $context->data->layouts = $layouts;
         }
-    }
-
-    protected function _getSettings(KViewContext $context)
-    {
-        $context->data->settings = $this->getObject('settings.'.$this->getObject('dispatcher')->getIdentifier()->package);
     }
 }
