@@ -15,12 +15,8 @@
  */
 abstract class ComKoowaTemplateAbstract extends KTemplateAbstract
 {
-    protected function _initialize(KObjectConfig $config)
+    public function getFilters()
     {
-        $config->append(array(
-            'filters' => array('title')
-        ));
-
-        parent::_initialize($config);
+        return $this->_filters;
     }
 }

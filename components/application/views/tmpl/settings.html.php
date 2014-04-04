@@ -1,7 +1,9 @@
-<h2>Settings Page</h2>
+<div class="bs">
+
+<h2>Settings</h2>
 
 <form method="post" action="<?=@route('view=settings&format=html')?>" name="settingsform">
-    <?php if (!empty($layouts)): ?>
+    <?php if ($display_layouts): ?>
     <fieldset>
         <legend class="screen-reader-text">Assign Pages to Views</legend>
         <ul>
@@ -22,8 +24,14 @@
         </ul>
     </fieldset>
     <?php endif ?>
+
+    <?= $settings_template ?>
+
+    <?php if ($display_actions): ?>
     <p><input name="save" type="submit" class="button button-primary button-large" value="Save"></p>
     <input type="hidden" name="_action" value="apply" />
     <input type="hidden" name="component" value="<?=@object('dispatcher')->getIdentifier()->package?>" />
-    <input type="hidden" name="settings[status]" value="Almost There" />
+    <?php endif ?>
 </form>
+
+</div>

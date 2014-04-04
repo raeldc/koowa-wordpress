@@ -40,6 +40,34 @@ class ComApplicationViewSettings extends ComKoowaViewHtml
      */
     protected function _actionRender(KViewContext $context)
     {
+        try
+        {
+            //Handle partial layout paths
+            $identifier = $loader = $this->getObject('dispatcher')->getIdentifier()->toArray();
+            $identifier['path']   = array('view');
+            $identifier['name']   = 'settings';
+
+            // Load through the component's template loader
+            $loader['path'] = array('template');
+            $loader['name'] = 'view';
+
+            $layout = (string) $this->getIdentifier($identifier);
+            $loader = (string) $this->getIdentifier($loader);
+
+            //Render the settings template of the component
+            $this->settings_template = (string) $this->getObject($loader, array(
+                    'filters' => array_keys($this->getTemplate()->getFilters()),
+                    'view' => $this
+                ))
+                ->load((string) $layout.'.html')
+                ->compile()
+                ->evaluate($this->getData())
+                ->render();
+
+            $this->display_actions = true;
+        }
+        catch(InvalidArgumentException $e) {}
+
         //Handle partial layout paths
         $identifier         = $this->getIdentifier()->toArray();
         $identifier['path'] = array('view');
@@ -47,7 +75,7 @@ class ComApplicationViewSettings extends ComKoowaViewHtml
 
         $layout = (string) $this->getIdentifier($identifier);
 
-        //Render the template
+        //Render the main template
         $this->_content = (string) $this->getTemplate()
             ->load((string) $layout.'.html')
             ->compile()
@@ -68,32 +96,35 @@ class ComApplicationViewSettings extends ComKoowaViewHtml
      */
     protected function _fetchData(KViewContext $context)
     {
+        // View layouts and pages
         $pages       = $this->getObject('com:application.model.pages');
         $layouts     = $this->getObject('lib:object.set');
         $component   = $this->getObject('dispatcher')->getIdentifier()->package;
         $viewlayouts = $this->getObject('com:application.model.viewlayouts')->component($component)->getList();
 
-        if (empty($viewlayouts)) {
-            return;
-        }
-
-        // Get all pages attached to this component.
-        $pages->getState()->component = $component;
-        $existing_pages               = $pages->getList();
-
-        foreach ($viewlayouts as $viewlayout)
+        if (!empty($viewlayouts))
         {
-            foreach ($existing_pages as $page)
+            $context->data->display_layouts = true;
+            $context->data->display_actions = true;
+
+            // Get all pages attached to this component.
+            $pages->getState()->component = $component;
+            $existing_pages               = $pages->getList();
+
+            foreach ($viewlayouts as $viewlayout)
             {
-                // Add the page id on the layouts it is attached to.
-                if ($viewlayout->view == $page->view && $viewlayout->layout == $page->layout) {
-                    $viewlayout->id = $page->id;
+                foreach ($existing_pages as $page)
+                {
+                    // Add the page id on the layouts it is attached to.
+                    if ($viewlayout->view == $page->view && $viewlayout->layout == $page->layout) {
+                        $viewlayout->id = $page->id;
+                    }
                 }
+
+                $layouts->insert($viewlayout);
             }
 
-            $layouts->insert($viewlayout);
+            $context->data->layouts = $layouts;
         }
-
-        $context->data->layouts = $layouts;
     }
 }
