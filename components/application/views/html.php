@@ -59,24 +59,25 @@ class ComApplicationViewHtml extends KViewTemplate implements KObjectInstantiabl
                     'url'          => $config->media_basepath.'js/bootstrap.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '3.1.1',
-                    'location'     => 'header',
+                    'location'     => 'footer',
                 ),
                 'datepicker' => array(
                     'url'          => $config->media_basepath.'js/datepicker.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '1.3.0',
-                    'location'     => 'header',
+                    'location'     => 'footer',
                 ),
                 'waypoints' => array(
                     'url'          => $config->media_basepath.'js/waypoints.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '2.0.4',
-                    'location'     => 'header',
+                    'location'     => 'footer',
                 )
             ),
             'styles' => array(
                 'bootstrap'  => $config->media_basepath.'css/bootstrap.css',
                 'datepicker' => $config->media_basepath.'css/datepicker.css',
+                'settings'   => $config->media_basepath.'css/settings.css',
             )
         ));
 
