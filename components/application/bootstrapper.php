@@ -102,6 +102,10 @@ class ComApplicationBootstrapper extends KObjectBootstrapperComponent
             }
             elseif(is_string($config)) $this->getObject('application')->registerComponent($component, $config);
 
+            // Set alias for the component settings
+            $this->getObjectManager()->registerAlias('com:application.database.row.settings.'.$component, 'settings.'.$component);
+
+            // Set alias for the component translator
             $this->getObjectManager()->registerAlias('com:koowa.translator.'.$component, 'translator.'.$component);
         }
     }

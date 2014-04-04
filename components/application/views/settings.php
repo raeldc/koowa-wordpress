@@ -13,7 +13,7 @@
  * @author  Israel Canasa <http://github.com/raeldc>
  * @package Koowa\Wordpress\View\Adminmenu
  */
-class ComApplicationViewSettings extends ComKoowaViewHtml
+final class ComApplicationViewSettings extends ComKoowaViewHtml
 {
     /**
      * Initializes the config for the object
@@ -96,6 +96,12 @@ class ComApplicationViewSettings extends ComKoowaViewHtml
      */
     protected function _fetchData(KViewContext $context)
     {
+        $this->_getViewLayouts($context);
+        $this->_getSettings($context);
+    }
+
+    protected function _getViewLayouts(KViewContext $context)
+    {
         // View layouts and pages
         $pages       = $this->getObject('com:application.model.pages');
         $layouts     = $this->getObject('lib:object.set');
@@ -126,5 +132,10 @@ class ComApplicationViewSettings extends ComKoowaViewHtml
 
             $context->data->layouts = $layouts;
         }
+    }
+
+    protected function _getSettings(KViewContext $context)
+    {
+        $context->data->settings = $this->getObject('settings.'.$this->getObject('dispatcher')->getIdentifier()->package);
     }
 }
