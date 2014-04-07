@@ -54,13 +54,13 @@ function koowa_bootstrap()
 	$manager->registerLocator('lib:object.locator.component');
 
     // Boostrap other koowa extensions
-    do_action('koowa_bootstrap');
+    do_action('koowa_before_bootstrap');
 
 	// Call the Bootstrapper
 	$manager->getObject('com:application.bootstrapper')->bootstrap();
 
 	// Boostrap other koowa extensions
-    do_action('koowa_bootstrapped');
+    do_action('koowa_after_bootstrap');
 
 	//Setup the request
 	$manager->getObject('request')
