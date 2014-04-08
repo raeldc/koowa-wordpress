@@ -54,4 +54,8 @@ $icon-font-path: "../fonts/";
     .progress-bar-loading    {
         @include progress-bar-variant(#ddd);
     }
+
+    // Custom Classes
+    @import "left-tab";
+    @import "button-checkbox";
 }
