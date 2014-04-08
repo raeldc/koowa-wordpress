@@ -73,8 +73,8 @@ class ComApplicationViewHtml extends KViewTemplate implements KObjectInstantiabl
                     'version'      => '2.0.4',
                     'location'     => 'header',
                 ),
-                'button-checkbox' => array(
-                    'url'          => $config->media_basepath.'js/button-checkbox.min.js',
+                'checkbox-button' => array(
+                    'url'          => $config->media_basepath.'js/checkbox-button.min.js',
                     'dependencies' => array('bootstrap'),
                     'version'      => '0.10',
                     'location'     => 'header',
@@ -88,7 +88,7 @@ class ComApplicationViewHtml extends KViewTemplate implements KObjectInstantiabl
         ));
 
         foreach ($config->scripts as $name => $details) {
-            wp_register_script($name, $details->url, $details->dependencies, $details->version, $details->location === 'footer');
+            wp_register_script($name, $details->url, $details->dependencies->toArray(), $details->version, $details->location === 'footer');
         }
 
         foreach ($config->styles as $name => $url) {

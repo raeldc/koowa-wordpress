@@ -4918,3 +4918,5 @@
     .bs .btn-disabled .badge {
       color: white;
       background-color: #333333; }
+  .bs [data-toggle="checkbox"] > .btn > input[type="checkbox"] {
+    display: none; }
