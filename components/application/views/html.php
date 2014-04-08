@@ -59,7 +59,7 @@ class ComApplicationViewHtml extends KViewTemplate implements KObjectInstantiabl
                     'url'          => $config->media_basepath.'js/bootstrap.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '3.1.1',
-                    'location'     => 'footer',
+                    'location'     => 'header',
                 ),
                 'datepicker' => array(
                     'url'          => $config->media_basepath.'js/datepicker.min.js',
@@ -71,6 +71,12 @@ class ComApplicationViewHtml extends KViewTemplate implements KObjectInstantiabl
                     'url'          => $config->media_basepath.'js/waypoints.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '2.0.4',
+                    'location'     => 'header',
+                ),
+                'button-checkbox' => array(
+                    'url'          => $config->media_basepath.'js/button-checkbox.min.js',
+                    'dependencies' => array('bootstrap'),
+                    'version'      => '0.10',
                     'location'     => 'header',
                 )
             ),
