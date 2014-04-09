@@ -8,8 +8,9 @@ Installation
 * Symlink or clone this repo to your WordPress plugin folder.
 * Symlink `/library` to your `koowa/code/libraries/koowa/libraries` repository.
 * Run this SQL:
-	
-	-- Create syntax for TABLE 'wp_koowa_pages'
+
+Just replace `wp_` with whatever prefix you used
+
 	CREATE TABLE `wp_koowa_pages` (
 		`id` int(11) unsigned NOT NULL,
 		`component` varchar(255) NOT NULL DEFAULT '',
@@ -20,7 +21,6 @@ Installation
 		PRIMARY KEY (`id`)
 	) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-	-- Create syntax for TABLE 'wp_koowa_settings'
 	CREATE TABLE `wp_koowa_settings` (
 		`component` varchar(100) NOT NULL DEFAULT '',
 		`settings` text NOT NULL,
@@ -36,6 +36,8 @@ Making a Plugin/Component for WordPress
 * Put the meta docblock that WordPress uses to get information about your plugin.
 * Now, you have to let Koowa know that your plugin exists. Here's how you bootstrap your plugin:
 
+Koowa components for WordPress does not use the bootstrapper chain (where it calls the bootstrapper object of each component). It's redundant and not good for performance. So do the bootstrapping within the plugin file itself using the `koowa_before_bootstrap` hook. There is also a `koowa_after_bootstrap`. As you can see, only the `com:application.bootstrapper` is called. That should be enough to bootstrap all Koowa plugins.
+
 	add_action('koowa_before_bootstrap', 'register_somekoowaplugin');
 	
 	function register_somekoowaplugin()
@@ -49,7 +51,7 @@ Making a Plugin/Component for WordPress
 	            ))
 	    ));
 	}
-* Koowa components for WordPress does not use the bootstrapper chain (where it calls the bootstrapper object of each component). It's redundant and not good for performance. So do the bootstrapping within the plugin file itself using the `koowa_before_bootstrap` hook. There is also a `koowa_after_bootstrap`. As you can see, only the `com:application.bootstrapper` is called. That should be enough to bootstrap all Koowa plugins.
+
 * See the `adminmenu => true` up there? That's very important for your backend.
 
 Directory Structure of a Plugin
@@ -98,7 +100,7 @@ Traditionally, you use shortcodes in WordPress to render the html of your plugin
 Some things you need to know
 ---
 
-Bootstrap is built in. Add it using:
+Bootstrap 3 is built in. Add it using:
 
 	<style dependencies="bootstrap"></style>
 	
