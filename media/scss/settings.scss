@@ -24,6 +24,15 @@
         .tab-content {
             padding-top: 10px;
         }
+
+        h3, h4{
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        fieldset.selection-list {
+            margin-top: 40px;
+        }
     }
 
     .action-buttons {
@@ -38,6 +47,19 @@
 
         .form-group {
 
+        }
+
+        .input-group a.label:link, 
+        .input-group  a.label:visited,{
+            margin: 0 5px;
+        }
+
+        .ignored-activities .control-label {
+            padding-top: 2px;
+        }
+
+        .btn {
+            min-width: 75px;
         }
     }
 }

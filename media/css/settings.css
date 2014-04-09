@@ -14,8 +14,20 @@
     margin-bottom: 20px; }
   .bs .settings-body .tab-content {
     padding-top: 10px; }
+  .bs .settings-body h3, .bs .settings-body h4 {
+    margin: 0 0 20px 0;
+    text-align: center; }
+  .bs .settings-body fieldset.selection-list {
+    margin-top: 40px; }
 .bs .action-buttons {
   text-align: center;
   margin-top: 40px; }
 .bs .settings-form .control-label.multiline {
   padding-top: 0; }
+.bs .settings-form .input-group a.label:link,
+.bs .settings-form .input-group a.label:visited {
+  margin: 0 5px; }
+.bs .settings-form .ignored-activities .control-label {
+  padding-top: 2px; }
+.bs .settings-form .btn {
+  min-width: 75px; }
