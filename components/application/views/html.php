@@ -59,25 +59,25 @@ class ComApplicationViewHtml extends KViewTemplate implements KObjectInstantiabl
                     'url'          => $config->media_basepath.'js/bootstrap.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '3.1.1',
-                    'location'     => 'header',
+                    'location'     => 'footer',
                 ),
                 'datepicker' => array(
                     'url'          => $config->media_basepath.'js/datepicker.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '1.3.0',
-                    'location'     => 'header',
+                    'location'     => 'footer',
                 ),
                 'waypoints' => array(
                     'url'          => $config->media_basepath.'js/waypoints.min.js',
                     'dependencies' => array('jquery'),
                     'version'      => '2.0.4',
-                    'location'     => 'header',
+                    'location'     => 'footer',
                 ),
                 'checkbox-button' => array(
                     'url'          => $config->media_basepath.'js/checkbox-button.min.js',
                     'dependencies' => array('bootstrap'),
                     'version'      => '0.10',
-                    'location'     => 'header',
+                    'location'     => 'footer',
                 )
             ),
             'styles' => array(
@@ -136,7 +136,7 @@ class ComApplicationViewHtml extends KViewTemplate implements KObjectInstantiabl
             if ($location === 'footer')
             {
                 if (empty($this->_footer_scripts)) {
-                    add_action(is_admin() ? 'admin_footer' : 'wp_footer', array($this, 'renderFooterScripts'));
+                    add_action(is_admin() ? 'admin_print_footer_scripts' : 'wp_footer', array($this, 'renderFooterScripts'), 100);
                 }
 
                 $this->_footer_scripts .= $script;
